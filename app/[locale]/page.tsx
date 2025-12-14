@@ -4,8 +4,6 @@ import { getTranslations } from 'next-intl/server'
 import AnalysisPanel from '@/components/performance-audit/analysis-panel'
 import PerformanceAuditResults from '@/components/performance-audit/results'
 
-export const dynamic = 'force-static'
-
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('seoChecker')
   return {
