@@ -1,4 +1,3 @@
-import { createAI } from './ai'
 import { createKV } from './kv'
 
 import type { MeasureResponse } from './measure'
@@ -20,6 +19,14 @@ export type RankingEntry = {
   hasSitemap: boolean
   metaScore: number
   contentScore: number
+  seoReadiness: {
+    crawlability: number
+    basicOnPage: number
+    contentSemantics: number
+    techExperience: number
+    seoOpportunity: number
+    overall: number
+  }
 }
 
 export type RankingData = {
@@ -27,134 +34,46 @@ export type RankingData = {
   updatedAt: string
 }
 
-const RANKING_KEY = 'seo_ranking'
+// KV Key prefixes for the new paginated design
+const RANKING_ENTRY_PREFIX = 'seo_ranking:entry:'
+const RANKING_PAGE_PREFIX = 'seo_ranking:page:'
+const RANKING_META_KEY = 'seo_ranking:meta'
+const RANKING_INDEX_KEY = 'seo_ranking:index' // For sorting/updating
+const LEGACY_RANKING_KEY = 'seo_ranking' // For backward compatibility
+
 const MAX_ENTRIES = 100
+const DEFAULT_PAGE_SIZE = 20
 
 /**
- * Calculate a comprehensive SEO score using AI
+ * Helper to create entry key
  */
-export async function calculateAIScore(measurement: MeasureResponse): Promise<number> {
-  const ai = createAI()
-
-  // Extract key metrics
-  const metrics = {
-    performanceScore: measurement.performanceScore ?? 0,
-    lcp: measurement.coreWebVitals.lcp.value,
-    cls: measurement.coreWebVitals.cls.value,
-    fid: measurement.coreWebVitals.fid.value,
-    mobileFriendly: measurement.mobileFriendly.status === 'pass' ? 1 : 0,
-    isHttps: measurement.isHttps ? 1 : 0,
-    hasRobots: measurement.robots.exists ? 1 : 0,
-    hasSitemap: measurement.sitemap.exists ? 1 : 0,
-    titleStatus: measurement.meta.titleStatus === 'within' ? 1 : measurement.meta.titleStatus === 'long' ? 0.5 : 0,
-    descriptionStatus:
-      measurement.meta.descriptionStatus === 'within' ? 1 : measurement.meta.descriptionStatus === 'long' ? 0.5 : 0,
-    contentScore: Math.min(measurement.contentSummary.wordCount / 500, 1) // Normalize to 0-1, 500 words = full score
-  }
-
-  // Create a prompt for AI to calculate comprehensive score
-  const prompt = `You are an SEO expert. Calculate a comprehensive SEO score (0-100) based on these metrics:
-
-Performance Score: ${metrics.performanceScore}/100
-Core Web Vitals:
-- LCP: ${metrics.lcp}ms (good: <2500ms)
-- CLS: ${metrics.cls} (good: <0.1)
-- FID: ${metrics.fid}ms (good: <100ms)
-Mobile Friendly: ${metrics.mobileFriendly === 1 ? 'Yes' : 'No'}
-HTTPS: ${metrics.isHttps === 1 ? 'Yes' : 'No'}
-Robots.txt: ${metrics.hasRobots === 1 ? 'Present' : 'Missing'}
-Sitemap: ${metrics.hasSitemap === 1 ? 'Present' : 'Missing'}
-Title: ${metrics.titleStatus === 1 ? 'Good' : metrics.titleStatus === 0.5 ? 'Too long' : 'Missing'}
-Description: ${metrics.descriptionStatus === 1 ? 'Good' : metrics.descriptionStatus === 0.5 ? 'Too long' : 'Missing'}
-Content: ${measurement.contentSummary.wordCount} words
-
-Consider all factors and provide a single score from 0-100. Return only the number, no explanation.`
-
-  try {
-    // Use Cloudflare AI to get score
-    const fullPrompt = `You are an SEO expert. Calculate a comprehensive SEO score (0-100) based on these metrics:
-
-${prompt}
-
-Return only a single number from 0-100, no explanation.`
-
-    const result = await ai.run('@cf/meta/llama-3-8b-instruct', {
-      prompt: fullPrompt,
-      max_tokens: 10,
-      temperature: 0.3
-    })
-
-    // Extract number from response
-    const scoreText =
-      (result as { response?: string; text?: string }).response || (result as { text?: string }).text || ''
-    const scoreMatch = scoreText.match(/\d+/)
-    const aiScore = scoreMatch ? parseInt(scoreMatch[0], 10) : null
-
-    if (aiScore !== null && aiScore >= 0 && aiScore <= 100) {
-      return aiScore
-    }
-  } catch (error) {
-    console.error('AI score calculation failed:', error)
-  }
-
-  // Fallback to weighted calculation if AI fails
-  return calculateWeightedScore(metrics)
+function getEntryKey(rootUrl: string): string {
+  return `${RANKING_ENTRY_PREFIX}${rootUrl}`
 }
 
 /**
- * Fallback weighted score calculation
+ * Helper to create page key
  */
-function calculateWeightedScore(metrics: {
-  performanceScore: number
-  lcp: number | null
-  cls: number | null
-  fid: number | null
-  mobileFriendly: number
-  isHttps: number
-  hasRobots: number
-  hasSitemap: number
-  titleStatus: number
-  descriptionStatus: number
-  contentScore: number
-}): number {
-  // Normalize Core Web Vitals
-  const lcpScore = metrics.lcp !== null ? Math.max(0, 1 - (metrics.lcp - 2500) / 2500) : 0.5
-  const clsScore = metrics.cls !== null ? Math.max(0, 1 - metrics.cls / 0.25) : 0.5
-  const fidScore = metrics.fid !== null ? Math.max(0, 1 - (metrics.fid - 100) / 100) : 0.5
+function getPageKey(pageNumber: number): string {
+  return `${RANKING_PAGE_PREFIX}${pageNumber}`
+}
 
-  // Weighted average
-  const weights = {
-    performance: 0.3,
-    coreWebVitals: 0.25, // Average of LCP, CLS, FID
-    mobileFriendly: 0.1,
-    security: 0.05, // HTTPS
-    indexing: 0.1, // Robots + Sitemap
-    meta: 0.1, // Title + Description
-    content: 0.1
-  }
-
-  const coreWebVitalsAvg = (lcpScore + clsScore + fidScore) / 3
-  const indexingScore = (metrics.hasRobots + metrics.hasSitemap) / 2
-  const metaScore = (metrics.titleStatus + metrics.descriptionStatus) / 2
-
-  const score =
-    weights.performance * (metrics.performanceScore / 100) +
-    weights.coreWebVitals * coreWebVitalsAvg +
-    weights.mobileFriendly * metrics.mobileFriendly +
-    weights.security * metrics.isHttps +
-    weights.indexing * indexingScore +
-    weights.meta * metaScore +
-    weights.content * metrics.contentScore
-
-  return Math.round(score * 100)
+/**
+ * Calculate SEO Readiness Score using the new 5-layer model
+ * Uses the seoReadiness.overall score from measurement
+ */
+export async function calculateAIScore(measurement: MeasureResponse): Promise<number> {
+  // Use the new SEO Readiness overall score
+  return measurement.seoReadiness.overall
 }
 
 /**
  * Get ranking entry from measurement
+ * Only root URLs should be passed to this function
  */
 export function createRankingEntry(measurement: MeasureResponse, score: number): RankingEntry {
   return {
-    url: measurement.measuredUrl,
+    url: measurement.rootUrl, // Use rootUrl as the primary URL since we only store root URLs
     rootUrl: measurement.rootUrl,
     score,
     measuredAt: measurement.measuredAt,
@@ -169,60 +88,417 @@ export function createRankingEntry(measurement: MeasureResponse, score: number):
     hasRobots: measurement.robots.exists,
     hasSitemap: measurement.sitemap.exists,
     metaScore: measurement.meta.titleStatus === 'within' && measurement.meta.descriptionStatus === 'within' ? 100 : 50,
-    contentScore: Math.min(Math.round((measurement.contentSummary.wordCount / 500) * 100), 100)
+    contentScore: Math.min(Math.round((measurement.contentSummary.wordCount / 500) * 100), 100),
+    seoReadiness: measurement.seoReadiness
   }
 }
 
 /**
- * Get current ranking from KV
+ * Ranking index structure stored in KV (for sorting/updating)
+ */
+type RankingIndex = {
+  entries: Array<{ url: string; score: number }> // Sorted by score descending
+  updatedAt: string
+}
+
+/**
+ * Ranking metadata structure
+ */
+type RankingMeta = {
+  totalEntries: number
+  totalPages: number
+  pageSize: number
+  updatedAt: string
+}
+
+/**
+ * Ranking page structure stored in KV
+ */
+type RankingPage = {
+  entries: RankingEntry[]
+  pageNumber: number
+  updatedAt: string
+}
+
+/**
+ * Migrate legacy ranking data to new structure
+ */
+async function migrateLegacyRanking(): Promise<void> {
+  const kv = createKV()
+  try {
+    const legacyData = await kv.get(LEGACY_RANKING_KEY, 'json')
+    if (legacyData && typeof legacyData === 'object' && 'entries' in legacyData) {
+      const rankingData = legacyData as RankingData
+      if (rankingData.entries.length > 0) {
+        // Migrate entries to new structure
+        const urls: string[] = []
+        const entryKeys: string[] = []
+        const entryValues: RankingEntry[] = []
+
+        for (const entry of rankingData.entries) {
+          urls.push(entry.rootUrl)
+          entryKeys.push(getEntryKey(entry.rootUrl))
+          entryValues.push(entry)
+        }
+
+        // Batch write entries
+        const putPromises = entryKeys.map((key, index) => kv.put(key, JSON.stringify(entryValues[index])))
+        await Promise.all(putPromises)
+
+        // Write index with scores (for sorting/updating)
+        const index: RankingIndex = {
+          entries: rankingData.entries.map((e) => ({ url: e.rootUrl, score: e.score })),
+          updatedAt: rankingData.updatedAt
+        }
+        await kv.put(RANKING_INDEX_KEY, JSON.stringify(index))
+
+        // Write pages (true KV pagination)
+        const pageSize = DEFAULT_PAGE_SIZE
+        const totalPages = Math.ceil(rankingData.entries.length / pageSize)
+        const pagePromises: Promise<void>[] = []
+
+        for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+          const startIndex = (pageNum - 1) * pageSize
+          const endIndex = Math.min(startIndex + pageSize, rankingData.entries.length)
+          const pageEntries = rankingData.entries.slice(startIndex, endIndex)
+
+          const page: RankingPage = {
+            entries: pageEntries,
+            pageNumber: pageNum,
+            updatedAt: rankingData.updatedAt
+          }
+          pagePromises.push(kv.put(getPageKey(pageNum), JSON.stringify(page)))
+        }
+        await Promise.all(pagePromises)
+
+        // Write meta
+        const meta: RankingMeta = {
+          totalEntries: urls.length,
+          totalPages,
+          pageSize,
+          updatedAt: rankingData.updatedAt
+        }
+        await kv.put(RANKING_META_KEY, JSON.stringify(meta))
+
+        // Delete legacy key
+        await kv.delete(LEGACY_RANKING_KEY)
+      }
+    }
+  } catch (error) {
+    console.error('Failed to migrate legacy ranking:', error)
+  }
+}
+
+/**
+ * Get current ranking from KV (new paginated structure)
+ *
+ * NOTE: This function reads ALL entries from KV. For better performance,
+ * use getPaginatedRanking() instead when you only need a specific page.
+ * This function is kept for backward compatibility and special use cases.
  */
 export async function getRanking(): Promise<RankingData> {
   const kv = createKV()
+
   try {
-    const data = await kv.get(RANKING_KEY, 'json')
-    if (data && typeof data === 'object' && 'entries' in data) {
-      return data as RankingData
+    // Try new structure first
+    const [indexData, metaData] = await Promise.all([
+      kv.get(RANKING_INDEX_KEY, 'json') as Promise<RankingIndex | null>,
+      kv.get(RANKING_META_KEY, 'json') as Promise<RankingMeta | null>
+    ])
+
+    if (indexData && indexData.entries && indexData.entries.length > 0) {
+      // Get all entries in batch
+      const urls = indexData.entries.map((e) => e.url)
+      const entryKeys = urls.map((url) => getEntryKey(url))
+      const entryMap = (await kv.get(entryKeys, 'json')) as Map<string, RankingEntry | null>
+
+      // Convert map to array, preserving order
+      const entries: RankingEntry[] = []
+      for (const url of urls) {
+        const entry = entryMap.get(getEntryKey(url))
+        if (entry) {
+          entries.push(entry)
+        }
+      }
+
+      return {
+        entries,
+        updatedAt: metaData?.updatedAt || indexData.updatedAt
+      }
+    }
+
+    // Try legacy structure and migrate
+    const legacyData = await kv.get(LEGACY_RANKING_KEY, 'json')
+    if (legacyData && typeof legacyData === 'object' && 'entries' in legacyData) {
+      await migrateLegacyRanking()
+      // Recursively call to get migrated data
+      return getRanking()
     }
   } catch (error) {
     console.error('Failed to get ranking:', error)
   }
+
   return { entries: [], updatedAt: new Date().toISOString() }
 }
 
+export type PaginatedRankingData = {
+  entries: RankingEntry[]
+  totalEntries: number
+  currentPage: number
+  totalPages: number
+  pageSize: number
+  updatedAt: string
+}
+
 /**
- * Update ranking with new entry
+ * Get paginated ranking data (true KV pagination - only reads the requested page)
  */
-export async function updateRanking(entry: RankingEntry): Promise<RankingData> {
+export async function getPaginatedRanking(
+  page: number = 1,
+  pageSize: number = DEFAULT_PAGE_SIZE
+): Promise<PaginatedRankingData> {
   const kv = createKV()
-  const current = await getRanking()
+  const normalizedPage = Math.max(1, Math.floor(page))
+  const normalizedPageSize = Math.max(1, Math.floor(pageSize))
 
-  // Remove existing entry for this URL if it exists
-  const filtered = current.entries.filter((e) => e.url !== entry.url && e.rootUrl !== entry.rootUrl)
+  try {
+    // Get meta to check if paginated structure exists
+    const metaData = (await kv.get(RANKING_META_KEY, 'json')) as RankingMeta | null
 
-  // Add new entry
-  const updated = [...filtered, entry]
+    // If new paginated structure exists and page size matches
+    if (metaData && metaData.pageSize === normalizedPageSize) {
+      // Only read the specific page from KV
+      const pageData = (await kv.get(getPageKey(normalizedPage), 'json')) as RankingPage | null
 
-  // Sort by score descending
-  updated.sort((a, b) => b.score - a.score)
+      if (pageData && pageData.entries) {
+        return {
+          entries: pageData.entries,
+          totalEntries: metaData.totalEntries,
+          currentPage: normalizedPage,
+          totalPages: metaData.totalPages,
+          pageSize: normalizedPageSize,
+          updatedAt: metaData.updatedAt
+        }
+      }
 
-  // Keep only top entries
-  const entries = updated.slice(0, MAX_ENTRIES)
+      // Page doesn't exist (out of range)
+      return {
+        entries: [],
+        totalEntries: metaData.totalEntries,
+        currentPage: normalizedPage,
+        totalPages: metaData.totalPages,
+        pageSize: normalizedPageSize,
+        updatedAt: metaData.updatedAt
+      }
+    }
 
-  const ranking: RankingData = {
-    entries,
-    updatedAt: new Date().toISOString()
+    // Fallback: check if index-based structure exists (needs migration)
+    const indexData = (await kv.get(RANKING_INDEX_KEY, 'json')) as RankingIndex | null
+    if (indexData && indexData.entries && indexData.entries.length > 0) {
+      // Migrate to page-based structure
+      await rebuildPagesFromIndex()
+      // Retry after migration
+      return getPaginatedRanking(page, pageSize)
+    }
+
+    // Fallback to legacy structure
+    const legacyData = await kv.get(LEGACY_RANKING_KEY, 'json')
+    if (legacyData && typeof legacyData === 'object' && 'entries' in legacyData) {
+      await migrateLegacyRanking()
+      // Retry after migration
+      return getPaginatedRanking(page, pageSize)
+    }
+  } catch (error) {
+    console.error('Failed to get paginated ranking:', error)
   }
 
-  // Save to KV
-  await kv.put(RANKING_KEY, JSON.stringify(ranking))
+  // Return empty result
+  return {
+    entries: [],
+    totalEntries: 0,
+    currentPage: normalizedPage,
+    totalPages: 0,
+    pageSize: normalizedPageSize,
+    updatedAt: new Date().toISOString()
+  }
+}
 
-  return ranking
+/**
+ * Rebuild pages from index (migration helper)
+ */
+async function rebuildPagesFromIndex(): Promise<void> {
+  const kv = createKV()
+  const indexData = (await kv.get(RANKING_INDEX_KEY, 'json')) as RankingIndex | null
+
+  if (!indexData || !indexData.entries || indexData.entries.length === 0) {
+    return
+  }
+
+  const pageSize = DEFAULT_PAGE_SIZE
+  const urls = indexData.entries.map((e) => e.url)
+  const entryKeys = urls.map((url) => getEntryKey(url))
+  const entryMap = (await kv.get(entryKeys, 'json')) as Map<string, RankingEntry | null>
+
+  // Build entries array in order
+  const entries: RankingEntry[] = []
+  for (const url of urls) {
+    const entry = entryMap.get(getEntryKey(url))
+    if (entry) {
+      entries.push(entry)
+    }
+  }
+
+  // Rebuild pages
+  const totalPages = Math.ceil(entries.length / pageSize)
+  const pagePromises: Promise<void>[] = []
+
+  for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+    const startIndex = (pageNum - 1) * pageSize
+    const endIndex = Math.min(startIndex + pageSize, entries.length)
+    const pageEntries = entries.slice(startIndex, endIndex)
+
+    const page: RankingPage = {
+      entries: pageEntries,
+      pageNumber: pageNum,
+      updatedAt: indexData.updatedAt
+    }
+    pagePromises.push(kv.put(getPageKey(pageNum), JSON.stringify(page)))
+  }
+  await Promise.all(pagePromises)
+
+  // Update meta
+  const meta: RankingMeta = {
+    totalEntries: entries.length,
+    totalPages,
+    pageSize,
+    updatedAt: indexData.updatedAt
+  }
+  await kv.put(RANKING_META_KEY, JSON.stringify(meta))
+}
+
+/**
+ * Update ranking with new entry (true KV pagination)
+ * Uses rootUrl as the unique identifier (only root URLs are stored)
+ * Rebuilds pages after update
+ */
+export async function updateRanking(entry: RankingEntry): Promise<void> {
+  const kv = createKV()
+  const now = new Date().toISOString()
+
+  try {
+    // Get current index (only contains URLs and scores, not full entries)
+    const indexData = (await kv.get(RANKING_INDEX_KEY, 'json')) as RankingIndex | null
+    let indexEntries = indexData?.entries || []
+
+    // Check if entry already exists and remove it
+    indexEntries = indexEntries.filter((e) => e.url !== entry.rootUrl)
+
+    // Add new entry
+    indexEntries.push({ url: entry.rootUrl, score: entry.score })
+
+    // Sort by score descending
+    indexEntries.sort((a, b) => b.score - a.score)
+
+    // Keep only top entries
+    const topEntries = indexEntries.slice(0, MAX_ENTRIES)
+    const topUrls = topEntries.map((e) => e.url)
+
+    // Save the new entry
+    await kv.put(getEntryKey(entry.rootUrl), JSON.stringify(entry))
+
+    // Update index
+    const newIndex: RankingIndex = {
+      entries: topEntries,
+      updatedAt: now
+    }
+    await kv.put(RANKING_INDEX_KEY, JSON.stringify(newIndex))
+
+    // Get all entries for rebuilding pages (only top entries)
+    const entryKeys = topUrls.map((url) => getEntryKey(url))
+    const entryMap = (await kv.get(entryKeys, 'json')) as Map<string, RankingEntry | null>
+
+    // Build entries array in order
+    const entries: RankingEntry[] = []
+    for (const url of topUrls) {
+      const e = entryMap.get(getEntryKey(url))
+      if (e) {
+        entries.push(e)
+      }
+    }
+
+    // Rebuild all pages
+    const pageSize = DEFAULT_PAGE_SIZE
+    const totalPages = Math.ceil(entries.length / pageSize)
+    const pagePromises: Promise<void>[] = []
+
+    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+      const startIndex = (pageNum - 1) * pageSize
+      const endIndex = Math.min(startIndex + pageSize, entries.length)
+      const pageEntries = entries.slice(startIndex, endIndex)
+
+      const page: RankingPage = {
+        entries: pageEntries,
+        pageNumber: pageNum,
+        updatedAt: now
+      }
+      pagePromises.push(kv.put(getPageKey(pageNum), JSON.stringify(page)))
+    }
+    await Promise.all(pagePromises)
+
+    // Delete old pages that are no longer needed
+    const oldMeta = (await kv.get(RANKING_META_KEY, 'json')) as RankingMeta | null
+    if (oldMeta && oldMeta.totalPages > totalPages) {
+      const deletePromises = []
+      for (let pageNum = totalPages + 1; pageNum <= oldMeta.totalPages; pageNum++) {
+        deletePromises.push(kv.delete(getPageKey(pageNum)))
+      }
+      await Promise.all(deletePromises)
+    }
+
+    // Update meta
+    const meta: RankingMeta = {
+      totalEntries: entries.length,
+      totalPages,
+      pageSize,
+      updatedAt: now
+    }
+    await kv.put(RANKING_META_KEY, JSON.stringify(meta))
+
+    // If entry was removed from top, delete its KV entry
+    const removedUrls = indexEntries.slice(MAX_ENTRIES).map((e) => e.url)
+    if (removedUrls.length > 0) {
+      const deletePromises = removedUrls.map((url) => kv.delete(getEntryKey(url)))
+      await Promise.all(deletePromises)
+    }
+  } catch (error) {
+    console.error('Failed to update ranking:', error)
+    // Fallback: try to read legacy structure and migrate
+    try {
+      const legacyData = await kv.get(LEGACY_RANKING_KEY, 'json')
+      if (legacyData && typeof legacyData === 'object' && 'entries' in legacyData) {
+        // Migrate legacy data first
+        await migrateLegacyRanking()
+        // Then update with new entry
+        await updateRanking(entry)
+        return
+      }
+    } catch (fallbackError) {
+      console.error('Failed to handle fallback:', fallbackError)
+    }
+    throw error
+  }
 }
 
 /**
  * Calculate and update ranking for a measurement
+ * Only processes root URLs, ignores sub-routes
  */
-export async function calculateAndUpdateRanking(measurement: MeasureResponse): Promise<RankingEntry> {
+export async function calculateAndUpdateRanking(measurement: MeasureResponse): Promise<RankingEntry | null> {
+  // Only process root URLs, skip sub-routes
+  if (measurement.scope !== 'root') {
+    return null
+  }
+
   const score = await calculateAIScore(measurement)
   const entry = createRankingEntry(measurement, score)
   await updateRanking(entry)
