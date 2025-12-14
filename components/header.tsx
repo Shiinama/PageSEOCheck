@@ -1,6 +1,5 @@
 'use client'
 
-import LoginHeader from '@/components/login/login-header'
 import Logo from '@/components/logo'
 import { cn } from '@/lib/utils'
 
@@ -39,7 +38,7 @@ export default function Header({ className }: { className?: string }) {
         </div>
         <div className="flex items-center gap-6">
           <LocaleSwitcher />
-          <LoginHeader />
+          {/* <LoginHeader /> */}
         </div>
       </nav>
 
