@@ -58,10 +58,10 @@
     "voiceDesign": "音声デザイン"
   },
   "siteInfo": {
-    "brandName": "Next Template",
+    "brandName": "SEO Checker",
     "description": "Think, Write, Code",
     "meta": {
-      "title": "Next Template - Think, Write, Code",
+      "title": "SEO Checker - Think, Write, Code",
       "description": "A responsive, lightweight, and accessible front-end framework using Next.js, TypeScript, and Tailwind CSS."
     }
   },

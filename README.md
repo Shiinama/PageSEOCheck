@@ -1,8 +1,8 @@
 <p align="center">
-  <h1 align="center">Next Cloudflare Template</h1>
+  <h1 align="center">ParallelFutureAI</h1>
 </p>
 <p align="center">
-  基于 Next.js 15 与 Cloudflare 全生态的现代全栈模版，覆盖单体应用从内容、国际化到商业化的完整实践。
+  基于 Next.js 15 与 Cloudflare 全生态的现代全栈应用，覆盖单体应用从内容、国际化到商业化的完整实践。
 </p>
 
 ## 目录
@@ -74,8 +74,8 @@
 2. **克隆与安装**
 
    ```bash
-   git clone https://github.com/Shiinama/next-cloudflare-template
-   cd next-cloudflare-template
+   git clone <your-repo-url> parallelfutureai
+   cd parallelfutureai
    pnpm install
    ```
 

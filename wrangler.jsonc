@@ -1,46 +1,62 @@
 {
-    "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "cloudflare-template",
-    "main": "worker.ts",
-    "compatibility_date": "2025-04-22",
-    "compatibility_flags": [
-        "nodejs_compat",
-        "global_fetch_strictly_public"
-    ],
-    "observability": {
-        "logs": {
-            "enabled": true
-        }
-    },
-    "assets": {
-        "directory": ".open-next/assets",
-        "binding": "ASSETS"
-    },
-    "d1_databases": [
-        {
-            "binding": "DB",
-            "database_name": "next-template",
-            "database_id": "76508c42-476a-458d-ae33-045e333d8bf4",
-            "migrations_dir": "migrations"
-        }
-    ],
-    "ai": {
-        "binding": "AI"
-    },
-    "r2_buckets": [
-        {
-            "bucket_name": "demo",
-            "binding": "NEXT_INC_CACHE_R2_BUCKET"
-        },
-        {
-            "bucket_name": "static",
-            "binding": "static"
-        }
-    ],
-    "services": [
-        {
-            "binding": "WORKER_SELF_REFERENCE",
-            "service": "cloudflare-template"
-        }
-    ]
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "page-seo-check",
+	"main": "worker.ts",
+	"compatibility_date": "2025-04-22",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
+	"observability": {
+		"logs": {
+			"enabled": true
+		}
+	},
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"d1_databases": [
+		{
+			"binding": "seocheck_db",
+			"database_name": "seocheck-db",
+			"database_id": "43f50cb6-7f82-48cb-81b8-2f7a4fa07887"
+		}
+	],
+	"ai": {
+		"binding": "AI",
+		"remote": true
+	},
+	"browser": {
+		"binding": "BROWSER"
+	},
+	"r2_buckets": [
+		{
+			"bucket_name": "seocheck-static",
+			"binding": "seocheck_static"
+		},
+		{
+			"bucket_name": "seocheck-inc-cache",
+			"binding": "seocheck_inc_cache",
+			"remote": true
+		}
+	],
+	"services": [
+		{
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "page-seo-check"
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SEO_CHECKER_BROWSER_KV",
+			"id": "19319547ced249d09d07e0cbeae2dff0",
+			"remote": true
+		},
+		{
+			"binding": "SEO_CHECKER_KV",
+			"id": "bceb618948754d65871bed2172191d61",
+			"remote": true
+		}
+	]
 }

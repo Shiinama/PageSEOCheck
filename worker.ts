@@ -4,20 +4,20 @@ import { default as handler } from './.open-next/worker.js'
 export default {
   fetch: handler.fetch
   // async scheduled(controller: ScheduledController, env: CloudflareEnv, ctx: ExecutionContext) {
-  //   // 你可以在这里根据 cron 表达式执行不同的任务
+  //   // You can run different tasks based on the cron expression here
   //   switch (controller.cron) {
   //     case '*/3 * * * *':
-  //       // 每三分钟执行一次
+  //       // Runs every three minutes
   //       // eslint-disable-next-line no-console
   //       console.log('cron processed for:', controller.scheduledTime)
   //       break
   //     case '*/10 * * * *':
-  //       // 每十分钟执行一次
+  //       // Runs every ten minutes
   //       // eslint-disable-next-line no-console
   //       console.log('cron processed for:', controller.scheduledTime)
   //       break
   //     case '*/45 * * * *':
-  //       // 每四十五分钟执行一次
+  //       // Runs every forty-five minutes
   //       // eslint-disable-next-line no-console
   //       console.log('cron processed for:', controller.scheduledTime)
   //       break
