@@ -273,12 +273,12 @@
       "tooLong": "Zu lang"
     },
     "insightsPanel": {
-      "title": "PageSpeed-Erkenntnisse",
+      "title": "Performance-Erkenntnisse",
       "subtitle": "Lab-Ergebnisse erweitern",
       "labDataSnapshot": "Lab-Daten-Snapshot",
       "coreLabMetrics": {
         "title": "Kern-Lab-Metriken",
-        "description": "Leistungsmessungen von PageSpeed",
+        "description": "Leistungsmessungen",
         "firstContentfulPaint": "First Contentful Paint",
         "largestContentfulPaint": "Largest Contentful Paint",
         "speedIndex": "Speed Index",
@@ -345,6 +345,18 @@
       "characters": "Zeichen",
       "wordCount": "Wortanzahl:",
       "htmlSize": "HTML-Größe:"
+    },
+    "measure": {
+      "fieldDataUnavailable": "Felddaten nicht verfügbar",
+      "fieldDataPrefix": "Felddaten",
+      "fieldDataCurrentlyUnavailable": "Felddaten derzeit nicht verfügbar",
+      "apiError": "Performance-API-Fehler",
+      "mobileFriendlyEvaluated": "Viewport, Tippziele und Textgröße für mobile Erfahrung bewertet.",
+      "mobileFriendlyPass": "Viewport und Tippziele bestehen mobile-freundliche Prüfungen.",
+      "mobileFriendlyFail": "Mobile-spezifische Probleme erkannt, die Aufmerksamkeit erfordern.",
+      "mobileFriendlyUnavailable": "Mobile-freundlicher Status für diesen Scan nicht verfügbar.",
+      "performanceLabel": "Leistung ({strategy})",
+      "performanceDetail": "{url} mit Strategie {strategy} gemessen. {summary}"
     }
   }
 }

@@ -18,7 +18,7 @@
 	},
 	"d1_databases": [
 		{
-			"binding": "seocheck_db",
+			"binding": "DB",
 			"database_name": "seocheck-db",
 			"database_id": "43f50cb6-7f82-48cb-81b8-2f7a4fa07887"
 		}
@@ -33,11 +33,11 @@
 	"r2_buckets": [
 		{
 			"bucket_name": "seocheck-static",
-			"binding": "seocheck_static"
+			"binding": "STATIC_R2_BUCKET"
 		},
 		{
 			"bucket_name": "seocheck-inc-cache",
-			"binding": "seocheck_inc_cache",
+			"binding": "NEXT_INC_CACHE_R2_BUCKET",
 			"remote": true
 		}
 	],

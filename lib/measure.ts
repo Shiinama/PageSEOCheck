@@ -1,6 +1,8 @@
-import type { PageSpeedMeta } from './page-speed-meta'
+import { getTranslations } from 'next-intl/server'
 
-type GoogleAudit = {
+import type { PerformanceMeta } from './page-speed-meta'
+
+type Audit = {
   numericValue?: number
   displayValue?: string
   score?: number | null
@@ -52,7 +54,7 @@ type LoadingExperience = {
   initial_url?: string
 }
 
-type GooglePagespeedResponse = {
+type PerformanceResponse = {
   captchaResult?: string
   kind?: string
   id?: string
@@ -76,7 +78,7 @@ type GooglePagespeedResponse = {
       [key: string]: LighthouseCategory | undefined
     }
     categoryGroups?: Record<string, { title?: string; description?: string; [key: string]: unknown }>
-    audits?: Record<string, GoogleAudit>
+    audits?: Record<string, Audit>
     fullPageScreenshot?: {
       screenshot?: {
         data?: string
@@ -205,13 +207,13 @@ export type MeasureResponse = {
   canonical: CanonicalInfo
   headings: HeadingsStructure
   seoReadiness: SEOReadinessScores
-  pageSpeedMeta?: PageSpeedMeta
+  performanceMeta?: PerformanceMeta
   loadingExperience?: LoadingExperience
   originLoadingExperience?: LoadingExperience
 }
 
-// PageSpeed API 地址
-const PAGESPEED_URL = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
+// Performance API endpoint
+const PERFORMANCE_API_URL = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
 
 // 字段数据键名映射
 const FIELD_KEYS = {
@@ -240,7 +242,7 @@ const formatLabMetric = (value: number | null, type: 'time' | 'cls' | 'fid') => 
   return formatted
 }
 
-const getAuditValue = (audits: Record<string, GoogleAudit> | undefined, key: string): number | null => {
+const getAuditValue = (audits: Record<string, Audit> | undefined, key: string): number | null => {
   const audit = audits?.[key]
   if (!audit || typeof audit.numericValue !== 'number') {
     return null
@@ -254,9 +256,14 @@ type FieldSummaryInput = {
   fid?: FieldMetric
 }
 
-// 构建字段数据摘要
-const buildFieldSummary = (metrics?: FieldSummaryInput) => {
-  if (!metrics) return '字段数据暂不可用'
+// Build field data summary
+const buildFieldSummary = async (metrics?: FieldSummaryInput, locale?: string): Promise<string> => {
+  const t = locale ? await getTranslations({ locale, namespace: 'seoChecker.measure' }) : null
+
+  if (!metrics) {
+    return t?.('fieldDataUnavailable') ?? 'Field data unavailable'
+  }
+
   const entries: string[] = []
   const metricsMap: Array<[keyof FieldSummaryInput, string]> = [
     ['lcp', 'LCP'],
@@ -271,7 +278,12 @@ const buildFieldSummary = (metrics?: FieldSummaryInput) => {
     }
   })
 
-  return entries.length ? `字段数据: ${entries.join(' · ')}` : '字段数据当前不可用'
+  if (entries.length) {
+    const prefix = t?.('fieldDataPrefix') ?? 'Field data'
+    return `${prefix}: ${entries.join(' · ')}`
+  }
+
+  return t?.('fieldDataCurrentlyUnavailable') ?? 'Field data currently unavailable'
 }
 
 const fetchPageSnapshot = async (url: string) => {
@@ -602,35 +614,39 @@ const locateSitemap = async (rootUrl: string): Promise<ResourceStatus> => {
   )
 }
 
-// 调用 PageSpeed API
-async function callPageSpeedApi(payloadUrl: string, strategy: 'mobile' | 'desktop') {
-  const pagespeedUrl = new URL(PAGESPEED_URL)
-  pagespeedUrl.searchParams.set('url', payloadUrl)
-  pagespeedUrl.searchParams.set('strategy', strategy)
-  // 不指定 category 以获取所有类别（performance, accessibility, best-practices, seo, pwa）
-  // 确保获取完整的 Lighthouse 数据，包括所有审计项
+// Call Performance API
+async function callPerformanceApi(payloadUrl: string, strategy: 'mobile' | 'desktop', locale?: string) {
+  const performanceUrl = new URL(PERFORMANCE_API_URL)
+  performanceUrl.searchParams.set('url', payloadUrl)
+  performanceUrl.searchParams.set('strategy', strategy)
+  // Don't specify category to get all categories (performance, accessibility, best-practices, seo, pwa)
+  // Ensure we get complete Lighthouse data, including all audit items
 
   const apiKey = process.env.PAGESPEED_API_KEY || process.env.NEXT_PUBLIC_PAGESPEED_API_KEY
   if (apiKey) {
-    pagespeedUrl.searchParams.set('key', apiKey)
+    performanceUrl.searchParams.set('key', apiKey)
   }
 
-  const response = await fetch(pagespeedUrl.toString(), {
+  const response = await fetch(performanceUrl.toString(), {
     next: { revalidate: 120 }
   })
 
   if (!response.ok) {
-    const detail = await response.text().catch(() => 'PageSpeed Insights 未知错误')
+    const t = locale ? await getTranslations({ locale, namespace: 'seoChecker.measure' }) : null
+    const errorMessage = t?.('apiError') ?? 'Performance API error'
+    const detail = await response.text().catch(() => errorMessage)
     throw new Error(detail.slice(0, 1024))
   }
 
-  return (await response.json()) as GooglePagespeedResponse
+  return (await response.json()) as PerformanceResponse
 }
 
 export async function measurePageSpeed(
   rawUrl: string,
-  strategy: 'mobile' | 'desktop' = 'mobile'
+  strategy: 'mobile' | 'desktop' = 'mobile',
+  locale?: string
 ): Promise<MeasureResponse> {
+  const t = locale ? await getTranslations({ locale, namespace: 'seoChecker.measure' }) : null
   const normalizedUrl = normalizeUrl(rawUrl)
 
   await probeUrl(normalizedUrl)
@@ -641,7 +657,7 @@ export async function measurePageSpeed(
   const isHttps = url.protocol === 'https:'
 
   const [data, snapshot, robots, sitemap] = await Promise.all([
-    callPageSpeedApi(normalizedUrl, strategy),
+    callPerformanceApi(normalizedUrl, strategy, locale),
     fetchPageSnapshot(normalizedUrl),
     checkResource(`${rootUrl}/robots.txt`),
     locateSitemap(rootUrl)
@@ -680,7 +696,7 @@ export async function measurePageSpeed(
 
   const fieldData = data.loadingExperience?.metrics
 
-  const coreWebVitals = {
+  const metrics = {
     lcp: {
       value: lcpLab,
       category: fieldData?.[FIELD_KEYS.lcp]?.category
@@ -692,21 +708,14 @@ export async function measurePageSpeed(
     fid: {
       value: fidLab,
       category: fieldData?.[FIELD_KEYS.fid]?.category
-    },
-    fieldSummary: buildFieldSummary({
-      lcp: {
-        value: lcpLab,
-        category: fieldData?.[FIELD_KEYS.lcp]?.category
-      },
-      cls: {
-        value: clsLab,
-        category: fieldData?.[FIELD_KEYS.cls]?.category
-      },
-      fid: {
-        value: fidLab,
-        category: fieldData?.[FIELD_KEYS.fid]?.category
-      }
-    }),
+    }
+  }
+
+  const fieldSummary = await buildFieldSummary(metrics, locale)
+
+  const coreWebVitals = {
+    ...metrics,
+    fieldSummary,
     labSummary: `Lab data: LCP ${formatLabMetric(lcpLab, 'time')} · CLS ${formatLabMetric(clsLab, 'cls')} · FID ${formatLabMetric(
       fidLab,
       'fid'
@@ -723,17 +732,22 @@ export async function measurePageSpeed(
     detail:
       mobileAudit?.displayValue ||
       mobileAudit?.description ||
-      'PageSpeed evaluated viewport, tap targets, and text sizing for mobile experience.',
+      (t?.('mobileFriendlyEvaluated') ?? 'Evaluated viewport, tap targets, and text sizing for mobile experience.'),
     message:
       mobileFriendlyStatus === 'pass'
-        ? 'Viewport and tap targets pass mobile-friendly checks.'
+        ? (t?.('mobileFriendlyPass') ?? 'Viewport and tap targets pass mobile-friendly checks.')
         : mobileFriendlyStatus === 'fail'
-          ? 'PageSpeed detected mobile-specific issues that need attention.'
-          : 'Mobile-friendly status is not available for this scan.'
+          ? (t?.('mobileFriendlyFail') ?? 'Detected mobile-specific issues that need attention.')
+          : (t?.('mobileFriendlyUnavailable') ?? 'Mobile-friendly status is not available for this scan.')
   }
 
-  const performanceLabel = `PageSpeed (${strategy})`
-  const performanceDetail = `使用 PageSpeed Insights (${strategy}) 测量 ${normalizedUrl}。${coreWebVitals.fieldSummary}`
+  const performanceLabel = t?.('performanceLabel', { strategy }) ?? `Performance (${strategy})`
+  const performanceDetail =
+    t?.('performanceDetail', {
+      strategy,
+      url: normalizedUrl,
+      summary: coreWebVitals.fieldSummary
+    }) ?? `Measured ${normalizedUrl} using ${strategy} strategy. ${coreWebVitals.fieldSummary}`
   const wordCount = cleanedText ? cleanedText.split(' ').filter(Boolean).length : 0
 
   const title = extractTitle(htmlContent)
@@ -752,8 +766,8 @@ export async function measurePageSpeed(
     descriptionStatus: !description ? 'missing' : description.length > DESCRIPTION_LIMIT ? 'long' : 'within'
   }
 
-  // 提取完整的 Lighthouse 数据用于 pageSpeedMeta
-  const pageSpeedMeta: PageSpeedMeta | undefined = lighthouse
+  // Extract complete Lighthouse data for performanceMeta
+  const performanceMeta: PerformanceMeta | undefined = lighthouse
     ? {
         fetchTime: lighthouse.fetchTime || data.analysisUTCTimestamp,
         environment: lighthouse.environment
@@ -823,7 +837,7 @@ export async function measurePageSpeed(
     canonical,
     headings,
     seoReadiness,
-    pageSpeedMeta,
+    performanceMeta,
     loadingExperience: data.loadingExperience,
     originLoadingExperience: data.originLoadingExperience
   }

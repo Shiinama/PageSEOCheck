@@ -273,12 +273,12 @@
       "tooLong": "너무 김"
     },
     "insightsPanel": {
-      "title": "PageSpeed 인사이트",
+      "title": "성능 인사이트",
       "subtitle": "실험실 결과 확장",
       "labDataSnapshot": "실험실 데이터 스냅샷",
       "coreLabMetrics": {
         "title": "핵심 실험실 지표",
-        "description": "PageSpeed의 성능 측정",
+        "description": "성능 측정",
         "firstContentfulPaint": "첫 콘텐츠 그리기",
         "largestContentfulPaint": "최대 콘텐츠 그리기",
         "speedIndex": "속도 지수",
@@ -345,6 +345,18 @@
       "characters": "문자",
       "wordCount": "단어 수:",
       "htmlSize": "HTML 크기:"
+    },
+    "measure": {
+      "fieldDataUnavailable": "필드 데이터를 사용할 수 없음",
+      "fieldDataPrefix": "필드 데이터",
+      "fieldDataCurrentlyUnavailable": "필드 데이터를 현재 사용할 수 없음",
+      "apiError": "성능 API 오류",
+      "mobileFriendlyEvaluated": "모바일 경험을 위해 뷰포트, 탭 타겟 및 텍스트 크기를 평가했습니다.",
+      "mobileFriendlyPass": "뷰포트와 탭 타겟이 모바일 친화성 검사를 통과했습니다.",
+      "mobileFriendlyFail": "주의가 필요한 모바일 특정 문제가 감지되었습니다.",
+      "mobileFriendlyUnavailable": "이 스캔에 대한 모바일 친화성 상태를 사용할 수 없습니다.",
+      "performanceLabel": "성능 ({strategy})",
+      "performanceDetail": "{strategy} 전략을 사용하여 {url}을(를) 측정했습니다. {summary}"
     }
   }
 }

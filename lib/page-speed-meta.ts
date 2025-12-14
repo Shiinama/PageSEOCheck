@@ -51,9 +51,12 @@ export type LighthouseConfigSettings = {
   [key: string]: unknown
 }
 
-export type PageSpeedMeta = {
+export type PerformanceMeta = {
   fetchTime?: string
   environment?: LighthouseEnvironment
   configSettings?: LighthouseConfigSettings
   audits?: Record<string, LighthouseAudit>
 }
+
+// Keep PageSpeedMeta as an alias for backward compatibility
+export type PageSpeedMeta = PerformanceMeta

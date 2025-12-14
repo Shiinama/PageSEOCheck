@@ -273,12 +273,12 @@
       "tooLong": "बहुत लंबा"
     },
     "insightsPanel": {
-      "title": "PageSpeed अंतर्दृष्टि",
+      "title": "प्रदर्शन अंतर्दृष्टि",
       "subtitle": "प्रयोगशाला परिणामों का विस्तार",
       "labDataSnapshot": "प्रयोगशाला डेटा स्नैपशॉट",
       "coreLabMetrics": {
         "title": "कोर प्रयोगशाला मेट्रिक्स",
-        "description": "PageSpeed से प्रदर्शन माप",
+        "description": "प्रदर्शन माप",
         "firstContentfulPaint": "First Contentful Paint",
         "largestContentfulPaint": "Largest Contentful Paint",
         "speedIndex": "Speed Index",
@@ -345,6 +345,18 @@
       "characters": "वर्ण",
       "wordCount": "शब्द गिनती:",
       "htmlSize": "HTML आकार:"
+    },
+    "measure": {
+      "fieldDataUnavailable": "फ़ील्ड डेटा उपलब्ध नहीं",
+      "fieldDataPrefix": "फ़ील्ड डेटा",
+      "fieldDataCurrentlyUnavailable": "फ़ील्ड डेटा वर्तमान में उपलब्ध नहीं",
+      "apiError": "प्रदर्शन API त्रुटि",
+      "mobileFriendlyEvaluated": "मोबाइल अनुभव के लिए viewport, टैप लक्ष्य और पाठ आकार का मूल्यांकन किया गया।",
+      "mobileFriendlyPass": "Viewport और टैप लक्ष्य मोबाइल-अनुकूल जांच पास करते हैं।",
+      "mobileFriendlyFail": "ध्यान देने की आवश्यकता वाली मोबाइल-विशिष्ट समस्याएं पाई गईं।",
+      "mobileFriendlyUnavailable": "इस स्कैन के लिए मोबाइल-अनुकूल स्थिति उपलब्ध नहीं है।",
+      "performanceLabel": "प्रदर्शन ({strategy})",
+      "performanceDetail": "{strategy} रणनीति का उपयोग करके {url} मापा गया। {summary}"
     }
   }
 }

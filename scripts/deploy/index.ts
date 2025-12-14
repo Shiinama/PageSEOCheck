@@ -3,7 +3,7 @@ import { execSync } from 'node:child_process'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
-const PROJECT_NAME = process.env.PROJECT_NAME || 'next-template'
+const PROJECT_NAME = process.env.PROJECT_NAME
 
 const environments = [
   'AUTH_SECRET',
@@ -11,11 +11,13 @@ const environments = [
   'AUTH_GOOGLE_SECRET',
   'AUTH_RESEND_KEY',
   'AUTH_TRUST_HOST',
-  'GMI_API_KEY',
+  'TWITTER_CLIENT_ID',
+  'TWITTER_CLIENT_SECRET',
+  'DISCORD_CLIENT_ID',
+  'DISCORD_CLIENT_SECRET',
   'NEXT_PUBLIC_BASE_URL',
   'NEXT_PUBLIC_ADMIN_ID',
-  'NEXT_PUBLIC_R2_DOMAIN',
-  'ELEVENLABS_API_KEY'
+  'NEXT_PUBLIC_R2_DOMAIN'
 ]
 
 /**

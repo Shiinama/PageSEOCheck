@@ -273,12 +273,12 @@
       "tooLong": "Слишком длинный"
     },
     "insightsPanel": {
-      "title": "PageSpeed инсайты",
+      "title": "Инсайты производительности",
       "subtitle": "Расширение результатов лаборатории",
       "labDataSnapshot": "Снимок данных лаборатории",
       "coreLabMetrics": {
         "title": "Основные лабораторные метрики",
-        "description": "Измерения производительности от PageSpeed",
+        "description": "Измерения производительности",
         "firstContentfulPaint": "First Contentful Paint",
         "largestContentfulPaint": "Largest Contentful Paint",
         "speedIndex": "Speed Index",
@@ -345,6 +345,18 @@
       "characters": "символов",
       "wordCount": "Количество слов:",
       "htmlSize": "Размер HTML:"
+    },
+    "measure": {
+      "fieldDataUnavailable": "Данные поля недоступны",
+      "fieldDataPrefix": "Данные поля",
+      "fieldDataCurrentlyUnavailable": "Данные поля в настоящее время недоступны",
+      "apiError": "Ошибка API производительности",
+      "mobileFriendlyEvaluated": "Оценены viewport, цели касания и размер текста для мобильного опыта.",
+      "mobileFriendlyPass": "Viewport и цели касания проходят проверки мобильной совместимости.",
+      "mobileFriendlyFail": "Обнаружены специфичные для мобильных устройств проблемы, требующие внимания.",
+      "mobileFriendlyUnavailable": "Статус мобильной совместимости недоступен для этого сканирования.",
+      "performanceLabel": "Производительность ({strategy})",
+      "performanceDetail": "Измерено {url} с использованием стратегии {strategy}. {summary}"
     }
   }
 }

@@ -273,12 +273,12 @@
       "tooLong": "長すぎる"
     },
     "insightsPanel": {
-      "title": "PageSpeedインサイト",
+      "title": "パフォーマンスインサイト",
       "subtitle": "ラボ結果の拡張",
       "labDataSnapshot": "ラボデータスナップショット",
       "coreLabMetrics": {
         "title": "コアラボ指標",
-        "description": "PageSpeedからのパフォーマンス測定",
+        "description": "パフォーマンス測定",
         "firstContentfulPaint": "First Contentful Paint",
         "largestContentfulPaint": "Largest Contentful Paint",
         "speedIndex": "Speed Index",
@@ -345,6 +345,18 @@
       "characters": "文字",
       "wordCount": "単語数:",
       "htmlSize": "HTMLサイズ:"
+    },
+    "measure": {
+      "fieldDataUnavailable": "フィールドデータは利用できません",
+      "fieldDataPrefix": "フィールドデータ",
+      "fieldDataCurrentlyUnavailable": "フィールドデータは現在利用できません",
+      "apiError": "パフォーマンスAPIエラー",
+      "mobileFriendlyEvaluated": "モバイル体験のためにビューポート、タップターゲット、テキストサイズを評価しました。",
+      "mobileFriendlyPass": "ビューポートとタップターゲットはモバイルフレンドリー性チェックを通過しました。",
+      "mobileFriendlyFail": "注意が必要なモバイル固有の問題が検出されました。",
+      "mobileFriendlyUnavailable": "このスキャンのモバイルフレンドリー性ステータスは利用できません。",
+      "performanceLabel": "パフォーマンス ({strategy})",
+      "performanceDetail": "{strategy} 戦略を使用して {url} を測定しました。{summary}"
     }
   }
 }

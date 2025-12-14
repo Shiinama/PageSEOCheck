@@ -273,12 +273,12 @@
       "tooLong": "Trop long"
     },
     "insightsPanel": {
-      "title": "PageSpeed insights",
+      "title": "Insights de performance",
       "subtitle": "Développer les résultats du laboratoire",
       "labDataSnapshot": "Instantané des données du laboratoire",
       "coreLabMetrics": {
         "title": "Métriques principales du laboratoire",
-        "description": "Mesures de performance de PageSpeed",
+        "description": "Mesures de performance",
         "firstContentfulPaint": "First Contentful Paint",
         "largestContentfulPaint": "Largest Contentful Paint",
         "speedIndex": "Speed Index",
@@ -345,6 +345,18 @@
       "characters": "caractères",
       "wordCount": "Nombre de mots:",
       "htmlSize": "Taille HTML:"
+    },
+    "measure": {
+      "fieldDataUnavailable": "Données de champ indisponibles",
+      "fieldDataPrefix": "Données de champ",
+      "fieldDataCurrentlyUnavailable": "Données de champ actuellement indisponibles",
+      "apiError": "Erreur API de performance",
+      "mobileFriendlyEvaluated": "Viewport, cibles tactiles et taille du texte évalués pour l'expérience mobile.",
+      "mobileFriendlyPass": "Viewport et cibles tactiles passent les vérifications de compatibilité mobile.",
+      "mobileFriendlyFail": "Problèmes spécifiques au mobile détectés nécessitant une attention.",
+      "mobileFriendlyUnavailable": "Le statut de compatibilité mobile n'est pas disponible pour ce scan.",
+      "performanceLabel": "Performance ({strategy})",
+      "performanceDetail": "Mesuré {url} en utilisant la stratégie {strategy}. {summary}"
     }
   }
 }

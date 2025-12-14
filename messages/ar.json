@@ -273,12 +273,12 @@
       "tooLong": "طويل جدًا"
     },
     "insightsPanel": {
-      "title": "رؤى PageSpeed",
+      "title": "رؤى الأداء",
       "subtitle": "توسيع نتائج المختبر",
       "labDataSnapshot": "لقطة بيانات المختبر",
       "coreLabMetrics": {
         "title": "مقاييس المختبر الأساسية",
-        "description": "قياسات الأداء من PageSpeed",
+        "description": "قياسات الأداء",
         "firstContentfulPaint": "First Contentful Paint",
         "largestContentfulPaint": "Largest Contentful Paint",
         "speedIndex": "Speed Index",
@@ -345,6 +345,18 @@
       "characters": "أحرف",
       "wordCount": "عدد الكلمات:",
       "htmlSize": "حجم HTML:"
+    },
+    "measure": {
+      "fieldDataUnavailable": "بيانات الحقل غير متاحة",
+      "fieldDataPrefix": "بيانات الحقل",
+      "fieldDataCurrentlyUnavailable": "بيانات الحقل غير متاحة حاليًا",
+      "apiError": "خطأ في واجهة برمجة تطبيقات الأداء",
+      "mobileFriendlyEvaluated": "تم تقييم viewport وأهداف اللمس وحجم النص لتجربة الهاتف المحمول.",
+      "mobileFriendlyPass": "تمر viewport وأهداف اللمس بفحوصات التوافق مع الهاتف المحمول.",
+      "mobileFriendlyFail": "تم اكتشاف مشاكل محددة للهاتف المحمول تحتاج إلى انتباه.",
+      "mobileFriendlyUnavailable": "حالة التوافق مع الهاتف المحمول غير متاحة لهذا المسح.",
+      "performanceLabel": "الأداء ({strategy})",
+      "performanceDetail": "تم قياس {url} باستخدام استراتيجية {strategy}. {summary}"
     }
   }
 }

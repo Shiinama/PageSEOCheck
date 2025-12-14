@@ -31,8 +31,7 @@ const METRIC_AUDITS: MetricDefinition[] = [
 const OPPORTUNITY_AUDITS: Array<{ key: string; labelKey: string }> = [
   { key: 'render-blocking-insight', labelKey: 'renderBlocking' },
   { key: 'unused-javascript', labelKey: 'unusedJavascript' },
-  { key: 'legacy-javascript-insight', labelKey: 'legacyJavascript' },
-  { key: 'cache-insight', labelKey: 'cacheHints' }
+  { key: 'legacy-javascript-insight', labelKey: 'legacyJavascript' }
 ]
 
 const formatBytes = (value?: number) =>
@@ -59,9 +58,9 @@ type InsightsPanelProps = {
 
 export default function InsightsPanel({ measurement }: InsightsPanelProps) {
   const t = useTranslations('seoChecker.insightsPanel')
-  const audits = measurement.pageSpeedMeta?.audits
-  const configSettings = measurement.pageSpeedMeta?.configSettings
-  const environment = measurement.pageSpeedMeta?.environment
+  const audits = measurement.performanceMeta?.audits
+  const configSettings = measurement.performanceMeta?.configSettings
+  const environment = measurement.performanceMeta?.environment
 
   const resourceSummary = audits?.['resource-summary']?.details as
     | {
@@ -81,8 +80,8 @@ export default function InsightsPanel({ measurement }: InsightsPanelProps) {
           <h4 className="text-foreground mt-2 text-xl font-semibold">{t('subtitle')}</h4>
         </div>
         <p className="text-muted-foreground shrink-0 text-xs font-medium">
-          {measurement.pageSpeedMeta?.fetchTime
-            ? new Date(measurement.pageSpeedMeta.fetchTime).toLocaleString()
+          {measurement.performanceMeta?.fetchTime
+            ? new Date(measurement.performanceMeta.fetchTime).toLocaleString()
             : t('labDataSnapshot')}
         </p>
       </div>

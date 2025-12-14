@@ -273,12 +273,12 @@
       "tooLong": "过长"
     },
     "insightsPanel": {
-      "title": "PageSpeed 洞察",
+      "title": "性能洞察",
       "subtitle": "扩展实验室结果",
       "labDataSnapshot": "实验室数据快照",
       "coreLabMetrics": {
         "title": "核心实验室指标",
-        "description": "来自 PageSpeed 的性能测量",
+        "description": "性能测量",
         "firstContentfulPaint": "首次内容绘制",
         "largestContentfulPaint": "最大内容绘制",
         "speedIndex": "速度指数",
@@ -345,6 +345,18 @@
       "characters": "字符",
       "wordCount": "字数：",
       "htmlSize": "HTML 大小："
+    },
+    "measure": {
+      "fieldDataUnavailable": "字段数据暂不可用",
+      "fieldDataPrefix": "字段数据",
+      "fieldDataCurrentlyUnavailable": "字段数据当前不可用",
+      "apiError": "性能 API 错误",
+      "mobileFriendlyEvaluated": "已评估视口、点击目标和文本大小以适配移动体验。",
+      "mobileFriendlyPass": "视口和点击目标通过移动友好性检查。",
+      "mobileFriendlyFail": "检测到需要关注的移动端特定问题。",
+      "mobileFriendlyUnavailable": "此扫描的移动友好性状态不可用。",
+      "performanceLabel": "性能 ({strategy})",
+      "performanceDetail": "使用 {strategy} 策略测量 {url}。{summary}"
     }
   }
 }
