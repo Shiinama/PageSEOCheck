@@ -10,6 +10,8 @@
     },
     "form": {
       "continueWithGoogle": "Continua con Google",
+      "continueWithTwitter": "Continua con Twitter",
+      "continueWithDiscord": "Continua con Discord",
       "continueWithGithub": "Continua con GitHub",
       "orContinueWith": "O continua con",
       "emailPlaceholder": "Inserisci il tuo indirizzo email",
@@ -183,6 +185,166 @@
     "imageGenerator": {
       "title": "Cloudflare Image Generator",
       "description": "Generate high-quality visuals with Cloudflare Workers AI. Complete the Turnstile challenge before each request."
+    }
+  },
+  "seoChecker": {
+    "metaTitle": "SEO Checker – Strumento Gratuito di Analisi SEO per Qualsiasi Sito Web",
+    "metaDescription": "Verifica il SEO del tuo sito web gratuitamente. Analizza prestazioni, velocità, Core Web Vitals e problemi SEO istantaneamente. Semplice, veloce e senza registrazione.",
+    "title": "Strumento Gratuito di Analisi SEO per Qualsiasi Sito Web",
+    "description": "Verifica il SEO del tuo sito web gratuitamente. Analizza prestazioni, velocità, Core Web Vitals e problemi SEO istantaneamente. Semplice, veloce e senza registrazione.",
+    "analysisPanel": {
+      "liveAnalysis": "Analisi in tempo reale",
+      "title": "Ottieni informazioni istantanee",
+      "description": "Inserisci qualsiasi URL pubblico e analizziamo, verifichiamo e riassumiamo i segnali SEO più impattanti per te.",
+      "lastRun": "Ultima esecuzione",
+      "scoresUpdate": "I punteggi vengono aggiornati ogni volta che richiedi un controllo.",
+      "targetUrlLabel": "URL di destinazione",
+      "urlPlaceholder": "https://example.com/page-to-audit",
+      "analyzing": "Analisi in corso...",
+      "analyzeButton": "Analizza URL",
+      "validationError": "Fornisci un URL da analizzare.",
+      "analyzingWait": "Analisi in corso... attendi i dati più recenti.",
+      "noResults": "Nessun risultato ancora. Invia un URL per avviare l'audit."
+    },
+    "results": {
+      "signalOverview": "Panoramica dei segnali",
+      "title": "Metriche critiche a colpo d'occhio",
+      "scoresUpdate": "I punteggi vengono aggiornati ogni volta che richiedi un controllo."
+    },
+    "signalOverview": {
+      "seoReadiness": "Preparazione SEO",
+      "performance": "Prestazioni",
+      "live": "In tempo reale",
+      "notSeoReady": "Non pronto per SEO",
+      "optimizable": "Ottimizzabile",
+      "seoReady": "Pronto per SEO",
+      "crawlability": "Rastreabilità",
+      "onPage": "Sulla pagina",
+      "content": "Contenuto",
+      "tech": "Tecnologia",
+      "opportunity": "Opportunità"
+    },
+    "seoReadinessPanel": {
+      "title": "Dettaglio Preparazione SEO",
+      "subtitle": "Valutazione modello a 5 livelli",
+      "layer1": {
+        "title": "1. Rastreabilità e Indicizzabilità",
+        "weight": "30% di peso",
+        "httpStatus": "Stato HTTP",
+        "blockedByRobots": "Bloccato da robots.txt",
+        "hasNoindex": "Ha noindex",
+        "canonical": "Canonico",
+        "valid": "Valido",
+        "pointsElsewhere": "Punta altrove",
+        "missing": "Mancante"
+      },
+      "layer2": {
+        "title": "2. Elementi Base sulla Pagina",
+        "weight": "25% di peso",
+        "titleLabel": "Titolo",
+        "description": "Descrizione",
+        "h1Count": "Conteggio H1",
+        "unique": "Unico",
+        "multiple": "Multiplo",
+        "h2h3Structure": "Struttura H2/H3"
+      },
+      "layer3": {
+        "title": "3. Segnali Tecnici e UX",
+        "weight": "15% di peso",
+        "lcp": "LCP",
+        "mobileFriendly": "Mobile Friendly",
+        "https": "HTTPS"
+      },
+      "layer4": {
+        "title": "4. Opportunità SEO",
+        "weight": "10% di peso",
+        "structureQuality": "Qualità della Struttura",
+        "good": "Buono",
+        "needsImprovement": "Richiede miglioramento"
+      },
+      "overall": {
+        "title": "Preparazione SEO Complessiva",
+        "notSeoReady": "Non pronto per SEO - Problemi critici da risolvere",
+        "optimizable": "Ottimizzabile - Buona base, richiede miglioramento",
+        "seoReady": "Pronto per SEO - Vale la pena investire in contenuti e link"
+      },
+      "yes": "Sì",
+      "no": "No",
+      "tooLong": "Troppo lungo"
+    },
+    "insightsPanel": {
+      "title": "PageSpeed insights",
+      "subtitle": "Espandi i risultati del laboratorio",
+      "labDataSnapshot": "Istantanea dati laboratorio",
+      "coreLabMetrics": {
+        "title": "Metriche principali del laboratorio",
+        "description": "Misurazioni delle prestazioni da PageSpeed",
+        "firstContentfulPaint": "First Contentful Paint",
+        "largestContentfulPaint": "Largest Contentful Paint",
+        "speedIndex": "Speed Index",
+        "timeToInteractive": "Time to Interactive",
+        "totalBlockingTime": "Total Blocking Time",
+        "maxPotentialFid": "Max Potential FID",
+        "cumulativeLayoutShift": "Cumulative Layout Shift"
+      },
+      "resourceSummary": {
+        "title": "Riepilogo risorse",
+        "description": "Statistiche di trasferimento di rete e richieste",
+        "totalRequests": "Totale richieste",
+        "totalTransfer": "Trasferimento totale",
+        "scriptTransfer": "Trasferimento script",
+        "thirdPartyTransfer": "Trasferimento terze parti"
+      },
+      "scanningEnvironment": {
+        "title": "Ambiente di scansione",
+        "description": "Configurazione dispositivo e rete",
+        "device": "Dispositivo",
+        "benchmark": "Benchmark",
+        "networkUA": "UA di rete",
+        "hostUA": "UA host",
+        "unknown": "Sconosciuto"
+      },
+      "opportunities": {
+        "title": "Opportunità",
+        "description": "Suggerimenti di ottimizzazione",
+        "renderBlocking": "Blocco rendering",
+        "unusedJavascript": "JavaScript non utilizzato",
+        "legacyJavascript": "JavaScript legacy",
+        "cacheHints": "Suggerimenti cache",
+        "noIssuesReported": "Nessun problema segnalato"
+      }
+    },
+    "siteSummary": {
+      "title": "Ambito e sicurezza",
+      "rootSite": "Sito root",
+      "specificPage": "Pagina specifica",
+      "analyzedHost": "Host analizzato",
+      "protocol": "Protocollo",
+      "https": "HTTPS",
+      "httpOnly": "Solo HTTP"
+    },
+    "indexingPanel": {
+      "title": "Suggerimenti indicizzazione",
+      "subtitle": "Robots e sitemap",
+      "robotsTxt": "Robots.txt",
+      "sitemap": "Sitemap",
+      "present": "Presente",
+      "missing": "Mancante",
+      "unavailable": "Non disponibile"
+    },
+    "metaContentPanel": {
+      "title": "Meta e contenuto",
+      "subtitle": "Lunghezze meta",
+      "titleLabel": "Titolo",
+      "description": "Descrizione",
+      "missing": "Mancante",
+      "tooLong": "Troppo lungo ({length}/{limit})",
+      "withinLimit": "Entro il limite ({length}/{limit})",
+      "contentSummary": "Riepilogo contenuto",
+      "contentTextLength": "Lunghezza testo contenuto:",
+      "characters": "caratteri",
+      "wordCount": "Conteggio parole:",
+      "htmlSize": "Dimensione HTML:"
     }
   }
 }

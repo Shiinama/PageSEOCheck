@@ -10,6 +10,8 @@
     },
     "form": {
       "continueWithGoogle": "Continuar com o Google",
+      "continueWithTwitter": "Continuar com o Twitter",
+      "continueWithDiscord": "Continuar com o Discord",
       "continueWithGithub": "Continuar com o GitHub",
       "orContinueWith": "Ou continuar com",
       "emailPlaceholder": "Insira seu endereço de e-mail",
@@ -183,6 +185,166 @@
     "imageGenerator": {
       "title": "Cloudflare Image Generator",
       "description": "Generate high-quality visuals with Cloudflare Workers AI. Complete the Turnstile challenge before each request."
+    }
+  },
+  "seoChecker": {
+    "metaTitle": "SEO Checker – Ferramenta Gratuita de Análise SEO para Qualquer Site",
+    "metaDescription": "Verifique o SEO do seu site gratuitamente. Analise desempenho, velocidade, Core Web Vitals e problemas de SEO instantaneamente. Simples, rápido e sem cadastro.",
+    "title": "Ferramenta Gratuita de Análise SEO para Qualquer Site",
+    "description": "Verifique o SEO do seu site gratuitamente. Analise desempenho, velocidade, Core Web Vitals e problemas de SEO instantaneamente. Simples, rápido e sem cadastro.",
+    "analysisPanel": {
+      "liveAnalysis": "Análise ao vivo",
+      "title": "Obtenha insights instantâneos",
+      "description": "Digite qualquer URL pública e rastreamos, auditamos e resumimos os sinais SEO mais impactantes para você.",
+      "lastRun": "Última execução",
+      "scoresUpdate": "As pontuações são atualizadas sempre que você solicita uma verificação.",
+      "targetUrlLabel": "URL de destino",
+      "urlPlaceholder": "https://example.com/page-to-audit",
+      "analyzing": "Analisando...",
+      "analyzeButton": "Analisar URL",
+      "validationError": "Por favor, forneça uma URL para analisar.",
+      "analyzingWait": "Analisando... aguarde os dados mais recentes.",
+      "noResults": "Ainda não há resultados. Envie uma URL para iniciar a auditoria."
+    },
+    "results": {
+      "signalOverview": "Visão geral de sinais",
+      "title": "Métricas críticas de relance",
+      "scoresUpdate": "As pontuações são atualizadas sempre que você solicita uma verificação."
+    },
+    "signalOverview": {
+      "seoReadiness": "Preparação SEO",
+      "performance": "Desempenho",
+      "live": "Ao vivo",
+      "notSeoReady": "Não preparado para SEO",
+      "optimizable": "Otimizável",
+      "seoReady": "Pronto para SEO",
+      "crawlability": "Rastreabilidade",
+      "onPage": "Na página",
+      "content": "Conteúdo",
+      "tech": "Tecnologia",
+      "opportunity": "Oportunidade"
+    },
+    "seoReadinessPanel": {
+      "title": "Detalhamento da Preparação SEO",
+      "subtitle": "Avaliação do modelo de 5 camadas",
+      "layer1": {
+        "title": "1. Rastreabilidade e Indexabilidade",
+        "weight": "30% de peso",
+        "httpStatus": "Status HTTP",
+        "blockedByRobots": "Bloqueado por robots.txt",
+        "hasNoindex": "Tem noindex",
+        "canonical": "Canônico",
+        "valid": "Válido",
+        "pointsElsewhere": "Aponta para outro lugar",
+        "missing": "Ausente"
+      },
+      "layer2": {
+        "title": "2. Básico na Página",
+        "weight": "25% de peso",
+        "titleLabel": "Título",
+        "description": "Descrição",
+        "h1Count": "Contagem H1",
+        "unique": "Único",
+        "multiple": "Múltiplo",
+        "h2h3Structure": "Estrutura H2/H3"
+      },
+      "layer3": {
+        "title": "3. Sinais Técnicos e UX",
+        "weight": "15% de peso",
+        "lcp": "LCP",
+        "mobileFriendly": "Amigável para mobile",
+        "https": "HTTPS"
+      },
+      "layer4": {
+        "title": "4. Oportunidade SEO",
+        "weight": "10% de peso",
+        "structureQuality": "Qualidade da Estrutura",
+        "good": "Bom",
+        "needsImprovement": "Precisa de melhoria"
+      },
+      "overall": {
+        "title": "Preparação SEO Geral",
+        "notSeoReady": "Não preparado para SEO - Problemas críticos precisam ser corrigidos",
+        "optimizable": "Otimizável - Boa base, precisa de melhoria",
+        "seoReady": "Pronto para SEO - Vale a pena investir em conteúdo e links"
+      },
+      "yes": "Sim",
+      "no": "Não",
+      "tooLong": "Muito longo"
+    },
+    "insightsPanel": {
+      "title": "PageSpeed insights",
+      "subtitle": "Expandir resultados do laboratório",
+      "labDataSnapshot": "Instantâneo de dados do laboratório",
+      "coreLabMetrics": {
+        "title": "Métricas principais do laboratório",
+        "description": "Medições de desempenho do PageSpeed",
+        "firstContentfulPaint": "First Contentful Paint",
+        "largestContentfulPaint": "Largest Contentful Paint",
+        "speedIndex": "Speed Index",
+        "timeToInteractive": "Time to Interactive",
+        "totalBlockingTime": "Total Blocking Time",
+        "maxPotentialFid": "Max Potential FID",
+        "cumulativeLayoutShift": "Cumulative Layout Shift"
+      },
+      "resourceSummary": {
+        "title": "Resumo de recursos",
+        "description": "Estatísticas de transferência de rede e solicitações",
+        "totalRequests": "Total de solicitações",
+        "totalTransfer": "Transferência total",
+        "scriptTransfer": "Transferência de scripts",
+        "thirdPartyTransfer": "Transferência de terceiros"
+      },
+      "scanningEnvironment": {
+        "title": "Ambiente de varredura",
+        "description": "Configuração de dispositivo e rede",
+        "device": "Dispositivo",
+        "benchmark": "Referência",
+        "networkUA": "UA de rede",
+        "hostUA": "UA de host",
+        "unknown": "Desconhecido"
+      },
+      "opportunities": {
+        "title": "Oportunidades",
+        "description": "Sugestões de otimização",
+        "renderBlocking": "Bloqueio de renderização",
+        "unusedJavascript": "JavaScript não utilizado",
+        "legacyJavascript": "JavaScript legado",
+        "cacheHints": "Dicas de cache",
+        "noIssuesReported": "Nenhum problema relatado"
+      }
+    },
+    "siteSummary": {
+      "title": "Escopo e segurança",
+      "rootSite": "Site raiz",
+      "specificPage": "Página específica",
+      "analyzedHost": "Host analisado",
+      "protocol": "Protocolo",
+      "https": "HTTPS",
+      "httpOnly": "Apenas HTTP"
+    },
+    "indexingPanel": {
+      "title": "Dicas de indexação",
+      "subtitle": "Robots e sitemaps",
+      "robotsTxt": "Robots.txt",
+      "sitemap": "Sitemap",
+      "present": "Presente",
+      "missing": "Ausente",
+      "unavailable": "Indisponível"
+    },
+    "metaContentPanel": {
+      "title": "Meta e conteúdo",
+      "subtitle": "Comprimentos meta",
+      "titleLabel": "Título",
+      "description": "Descrição",
+      "missing": "Ausente",
+      "tooLong": "Muito longo ({length}/{limit})",
+      "withinLimit": "Dentro do limite ({length}/{limit})",
+      "contentSummary": "Resumo do conteúdo",
+      "contentTextLength": "Comprimento do texto do conteúdo:",
+      "characters": "caracteres",
+      "wordCount": "Contagem de palavras:",
+      "htmlSize": "Tamanho HTML:"
     }
   }
 }

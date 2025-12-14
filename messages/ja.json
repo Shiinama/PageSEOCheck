@@ -10,6 +10,8 @@
     },
     "form": {
       "continueWithGoogle": "Googleで続行する",
+      "continueWithTwitter": "Twitterで続行する",
+      "continueWithDiscord": "Discordで続行する",
       "continueWithGithub": "GitHubで続行する",
       "orContinueWith": "または続行する",
       "emailPlaceholder": "メールアドレスを入力してください",
@@ -183,6 +185,166 @@
     "imageGenerator": {
       "title": "Cloudflare Image Generator",
       "description": "Generate high-quality visuals with Cloudflare Workers AI. Complete the Turnstile challenge before each request."
+    }
+  },
+  "seoChecker": {
+    "metaTitle": "SEOチェッカー – 無料のウェブサイトSEO分析ツール",
+    "metaDescription": "ウェブサイトのSEOを無料でチェック。パフォーマンス、速度、Core Web Vitals、SEOの問題を即座に分析。シンプル、高速、登録不要。",
+    "title": "無料のウェブサイトSEO分析ツール",
+    "description": "ウェブサイトのSEOを無料でチェック。パフォーマンス、速度、Core Web Vitals、SEOの問題を即座に分析。シンプル、高速、登録不要。",
+    "analysisPanel": {
+      "liveAnalysis": "ライブ分析",
+      "title": "即座にインサイトを取得",
+      "description": "公開URLを入力すると、クロール、監査、最も影響力のあるSEOシグナルを要約します。",
+      "lastRun": "最終実行",
+      "scoresUpdate": "チェックをリクエストするたびにスコアが更新されます。",
+      "targetUrlLabel": "対象URL",
+      "urlPlaceholder": "https://example.com/page-to-audit",
+      "analyzing": "分析中...",
+      "analyzeButton": "URLを分析",
+      "validationError": "分析するURLを入力してください。",
+      "analyzingWait": "分析中... 最新のデータをお待ちください。",
+      "noResults": "まだ結果がありません。URLを送信して監査を開始してください。"
+    },
+    "results": {
+      "signalOverview": "シグナル概要",
+      "title": "一目でわかる重要な指標",
+      "scoresUpdate": "チェックをリクエストするたびにスコアが更新されます。"
+    },
+    "signalOverview": {
+      "seoReadiness": "SEO準備度",
+      "performance": "パフォーマンス",
+      "live": "ライブ",
+      "notSeoReady": "SEO準備未完了",
+      "optimizable": "最適化可能",
+      "seoReady": "SEO準備完了",
+      "crawlability": "クロール可能性",
+      "onPage": "オンページ",
+      "content": "コンテンツ",
+      "tech": "技術",
+      "opportunity": "機会"
+    },
+    "seoReadinessPanel": {
+      "title": "SEO準備度の内訳",
+      "subtitle": "5層モデル評価",
+      "layer1": {
+        "title": "1. クロール可能性とインデックス可能性",
+        "weight": "30%の重み",
+        "httpStatus": "HTTPステータス",
+        "blockedByRobots": "robots.txtによってブロック",
+        "hasNoindex": "noindexあり",
+        "canonical": "正規URL",
+        "valid": "有効",
+        "pointsElsewhere": "他の場所を指している",
+        "missing": "欠落"
+      },
+      "layer2": {
+        "title": "2. 基本的なオンページ要素",
+        "weight": "25%の重み",
+        "titleLabel": "タイトル",
+        "description": "説明",
+        "h1Count": "H1の数",
+        "unique": "ユニーク",
+        "multiple": "複数",
+        "h2h3Structure": "H2/H3構造"
+      },
+      "layer3": {
+        "title": "3. 技術とUXシグナル",
+        "weight": "15%の重み",
+        "lcp": "LCP",
+        "mobileFriendly": "モバイル対応",
+        "https": "HTTPS"
+      },
+      "layer4": {
+        "title": "4. SEO機会",
+        "weight": "10%の重み",
+        "structureQuality": "構造品質",
+        "good": "良好",
+        "needsImprovement": "改善が必要"
+      },
+      "overall": {
+        "title": "総合SEO準備度",
+        "notSeoReady": "SEO準備未完了 - 重要な問題の修正が必要",
+        "optimizable": "最適化可能 - 良い基盤、改善が必要",
+        "seoReady": "SEO準備完了 - コンテンツとリンクへの投資価値あり"
+      },
+      "yes": "はい",
+      "no": "いいえ",
+      "tooLong": "長すぎる"
+    },
+    "insightsPanel": {
+      "title": "PageSpeedインサイト",
+      "subtitle": "ラボ結果の拡張",
+      "labDataSnapshot": "ラボデータスナップショット",
+      "coreLabMetrics": {
+        "title": "コアラボ指標",
+        "description": "PageSpeedからのパフォーマンス測定",
+        "firstContentfulPaint": "First Contentful Paint",
+        "largestContentfulPaint": "Largest Contentful Paint",
+        "speedIndex": "Speed Index",
+        "timeToInteractive": "Time to Interactive",
+        "totalBlockingTime": "Total Blocking Time",
+        "maxPotentialFid": "Max Potential FID",
+        "cumulativeLayoutShift": "Cumulative Layout Shift"
+      },
+      "resourceSummary": {
+        "title": "リソース要約",
+        "description": "ネットワーク転送とリクエスト統計",
+        "totalRequests": "総リクエスト数",
+        "totalTransfer": "総転送量",
+        "scriptTransfer": "スクリプト転送",
+        "thirdPartyTransfer": "サードパーティ転送"
+      },
+      "scanningEnvironment": {
+        "title": "スキャン環境",
+        "description": "デバイスとネットワーク構成",
+        "device": "デバイス",
+        "benchmark": "ベンチマーク",
+        "networkUA": "ネットワークUA",
+        "hostUA": "ホストUA",
+        "unknown": "不明"
+      },
+      "opportunities": {
+        "title": "最適化機会",
+        "description": "最適化提案",
+        "renderBlocking": "レンダリングブロッキング",
+        "unusedJavascript": "未使用のJavaScript",
+        "legacyJavascript": "レガシーJavaScript",
+        "cacheHints": "キャッシュヒント",
+        "noIssuesReported": "報告された問題なし"
+      }
+    },
+    "siteSummary": {
+      "title": "範囲とセキュリティ",
+      "rootSite": "ルートサイト",
+      "specificPage": "特定のページ",
+      "analyzedHost": "分析されたホスト",
+      "protocol": "プロトコル",
+      "https": "HTTPS",
+      "httpOnly": "HTTPのみ"
+    },
+    "indexingPanel": {
+      "title": "インデックスヒント",
+      "subtitle": "Robotsとサイトマップ",
+      "robotsTxt": "Robots.txt",
+      "sitemap": "サイトマップ",
+      "present": "存在",
+      "missing": "欠落",
+      "unavailable": "利用不可"
+    },
+    "metaContentPanel": {
+      "title": "メタとコンテンツ",
+      "subtitle": "メタ長さ",
+      "titleLabel": "タイトル",
+      "description": "説明",
+      "missing": "欠落",
+      "tooLong": "長すぎる ({length}/{limit})",
+      "withinLimit": "制限内 ({length}/{limit})",
+      "contentSummary": "コンテンツ要約",
+      "contentTextLength": "コンテンツテキスト長:",
+      "characters": "文字",
+      "wordCount": "単語数:",
+      "htmlSize": "HTMLサイズ:"
     }
   }
 }

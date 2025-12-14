@@ -141,6 +141,40 @@ export type ContentSummary = {
   wordCount: number
 }
 
+export type CrawlabilityInfo = {
+  httpStatus: number | null
+  isBlockedByRobots: boolean
+  hasNoindex: boolean
+  hasNofollow: boolean
+  requiresJsForContent: boolean
+  isAccessible: boolean
+}
+
+export type CanonicalInfo = {
+  exists: boolean
+  url: string | null
+  pointsToSelf: boolean
+  hasParameterPollution: boolean
+}
+
+export type HeadingsStructure = {
+  h1Count: number
+  h1Text: string | null
+  h2Count: number
+  h3Count: number
+  hasUniqueH1: boolean
+  h1MatchesTitle: boolean
+  hasProperStructure: boolean
+}
+
+export type SEOReadinessScores = {
+  crawlability: number // 0-100
+  basicOnPage: number // 0-100
+  techExperience: number // 0-100
+  seoOpportunity: number // 0-100
+  overall: number // 0-100
+}
+
 export type MeasureResponse = {
   measuredAt: string
   measuredUrl: string
@@ -167,13 +201,19 @@ export type MeasureResponse = {
   sitemap: ResourceStatus
   meta: MetaInfo
   contentSummary: ContentSummary
+  crawlability: CrawlabilityInfo
+  canonical: CanonicalInfo
+  headings: HeadingsStructure
+  seoReadiness: SEOReadinessScores
   pageSpeedMeta?: PageSpeedMeta
   loadingExperience?: LoadingExperience
   originLoadingExperience?: LoadingExperience
 }
 
+// PageSpeed API 地址
 const PAGESPEED_URL = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
 
+// 字段数据键名映射
 const FIELD_KEYS = {
   lcp: 'LARGEST_CONTENTFUL_PAINT_MS',
   cls: 'CUMULATIVE_LAYOUT_SHIFT_SCORE',
@@ -214,10 +254,10 @@ type FieldSummaryInput = {
   fid?: FieldMetric
 }
 
+// 构建字段数据摘要
 const buildFieldSummary = (metrics?: FieldSummaryInput) => {
-  if (!metrics) return 'Field data not available yet.'
+  if (!metrics) return '字段数据暂不可用'
   const entries: string[] = []
-
   const metricsMap: Array<[keyof FieldSummaryInput, string]> = [
     ['lcp', 'LCP'],
     ['cls', 'CLS'],
@@ -231,7 +271,7 @@ const buildFieldSummary = (metrics?: FieldSummaryInput) => {
     }
   })
 
-  return entries.length ? `Field data: ${entries.join(' · ')}` : 'Field data currently unavailable.'
+  return entries.length ? `字段数据: ${entries.join(' · ')}` : '字段数据当前不可用'
 }
 
 const fetchPageSnapshot = async (url: string) => {
@@ -296,6 +336,225 @@ const extractMetaDescription = (html: string) => {
   return primary ? primary[3]?.trim() || null : null
 }
 
+const extractCanonical = (html: string, currentUrl: string): CanonicalInfo => {
+  const canonicalMatch =
+    html.match(/<link\b[^>]*rel=(["'])canonical\1[^>]*href=(["'])([\s\S]*?)\2[^>]*>/i) ||
+    html.match(/<link\b[^>]*href=(["'])([\s\S]*?)\1[^>]*rel=(["'])canonical\3[^>]*>/i)
+
+  if (!canonicalMatch) {
+    return {
+      exists: false,
+      url: null,
+      pointsToSelf: false,
+      hasParameterPollution: false
+    }
+  }
+
+  const canonicalUrl = canonicalMatch[3]?.trim() || null
+  if (!canonicalUrl) {
+    return {
+      exists: true,
+      url: null,
+      pointsToSelf: false,
+      hasParameterPollution: false
+    }
+  }
+
+  try {
+    const current = new URL(currentUrl)
+    const canonical = new URL(canonicalUrl, currentUrl)
+    const pointsToSelf = canonical.href === current.href
+    const hasParameterPollution = /[?&](utm_|ref=|source=|campaign=)/i.test(currentUrl)
+
+    return {
+      exists: true,
+      url: canonicalUrl,
+      pointsToSelf,
+      hasParameterPollution
+    }
+  } catch {
+    return {
+      exists: true,
+      url: canonicalUrl,
+      pointsToSelf: false,
+      hasParameterPollution: false
+    }
+  }
+}
+
+// 检查 robots.txt 是否阻止该 URL
+const checkRobotsBlocking = async (url: string, rootUrl: string): Promise<boolean> => {
+  try {
+    const robotsUrl = `${rootUrl}/robots.txt`
+    const response = await fetch(robotsUrl, { cache: 'no-store' })
+    if (!response.ok) return false
+
+    const robotsTxt = await response.text()
+    const urlPath = new URL(url).pathname
+    const lines = robotsTxt.split('\n')
+    let inUniversalAgent = false
+    let isDisallowed = false
+
+    for (const line of lines) {
+      const trimmed = line.trim()
+      if (/^User-agent:\s*\*/i.test(trimmed)) {
+        inUniversalAgent = true
+        isDisallowed = false
+      } else if (/^User-agent:/i.test(trimmed)) {
+        inUniversalAgent = false
+      } else if (inUniversalAgent && /^Disallow:\s*\/$/i.test(trimmed)) {
+        isDisallowed = true
+      } else if (inUniversalAgent && /^Disallow:/i.test(trimmed)) {
+        const disallowPath = trimmed.replace(/^Disallow:\s*/i, '').trim()
+        if (urlPath.startsWith(disallowPath)) {
+          isDisallowed = true
+        }
+      }
+    }
+
+    return isDisallowed
+  } catch {
+    return false
+  }
+}
+
+const checkNoindexNofollow = (html: string) => {
+  const metaRobots =
+    html.match(/<meta\b[^>]*name=(["'])robots\1[^>]*content=(["'])([\s\S]*?)\2[^>]*>/i) ||
+    html.match(/<meta\b[^>]*content=(["'])([\s\S]*?)\1[^>]*name=(["'])robots\3[^>]*>/i)
+
+  if (!metaRobots) {
+    return { hasNoindex: false, hasNofollow: false }
+  }
+
+  const content = metaRobots[3]?.toLowerCase() || ''
+  return {
+    hasNoindex: /noindex/i.test(content),
+    hasNofollow: /nofollow/i.test(content)
+  }
+}
+
+const analyzeHeadings = (html: string, title: string | null): HeadingsStructure => {
+  const h1Matches = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/gi) || []
+  const h2Matches = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/gi) || []
+  const h3Matches = html.match(/<h3[^>]*>([\s\S]*?)<\/h3>/gi) || []
+
+  const h1Count = h1Matches.length
+  const h2Count = h2Matches.length
+  const h3Count = h3Matches.length
+
+  const firstH1 = h1Matches[0]
+  const h1Text = firstH1 ? stripTags(firstH1).trim() : null
+
+  const hasUniqueH1 = h1Count === 1
+  const h1MatchesTitle =
+    title && h1Text
+      ? h1Text.toLowerCase().includes(title.toLowerCase().substring(0, 20)) ||
+        title.toLowerCase().includes(h1Text.toLowerCase().substring(0, 20))
+      : false
+  const hasProperStructure = hasUniqueH1 && (h2Count > 0 || h3Count > 0)
+
+  return {
+    h1Count,
+    h1Text,
+    h2Count,
+    h3Count,
+    hasUniqueH1,
+    h1MatchesTitle,
+    hasProperStructure
+  }
+}
+
+// 计算可抓取性分数（第1层，40%权重）
+function calculateCrawlabilityScore(crawlability: CrawlabilityInfo, canonical: CanonicalInfo): number {
+  let score = 0
+  if (crawlability.httpStatus === 200) score += 20
+  if (!crawlability.isBlockedByRobots) score += 20
+  if (!crawlability.hasNoindex) score += 20
+  if (!crawlability.requiresJsForContent) score += 15
+  if (canonical.exists && canonical.pointsToSelf) score += 15
+  if (!canonical.hasParameterPollution) score += 10
+  return Math.min(score, 100)
+}
+
+// 计算基础页面优化分数（第2层，35%权重）
+function calculateBasicOnPageScore(meta: MetaInfo, headings: HeadingsStructure): number {
+  let score = 0
+  if (meta.title && meta.titleStatus === 'within') score += 30
+  else if (meta.title && meta.titleStatus === 'long') score += 15
+  if (meta.description && meta.descriptionStatus === 'within') score += 20
+  else if (meta.description && meta.descriptionStatus === 'long') score += 10
+  if (headings.hasUniqueH1) score += 25
+  if (headings.h1MatchesTitle) score += 10
+  if (headings.hasProperStructure) score += 15
+  return Math.min(score, 100)
+}
+
+// 计算技术体验分数（第3层，15%权重）
+function calculateTechExperienceScore(
+  coreWebVitals: MeasureResponse['coreWebVitals'],
+  mobileFriendly: MeasureResponse['mobileFriendly'],
+  isHttps: boolean
+): number {
+  let score = 0
+  const lcp = coreWebVitals.lcp.value
+  const cls = coreWebVitals.cls.value
+
+  if (lcp !== null && lcp < 4000)
+    score += 30 // LCP < 4s
+  else if (lcp !== null && lcp < 6000) score += 15
+  if (cls !== null && cls < 0.25) score += 20 // CLS < 0.25
+  if (mobileFriendly.status === 'pass') score += 30
+  else if (mobileFriendly.status === 'unknown') score += 15
+  if (isHttps) score += 20
+
+  return Math.min(score, 100)
+}
+
+// 计算 SEO 机会分数（第4层，10%权重）
+function calculateSEOOpportunityScore(meta: MetaInfo, headings: HeadingsStructure, canonical: CanonicalInfo): number {
+  let score = 0
+  if (headings.hasProperStructure) score += 40
+  if (meta.title && meta.description) score += 30
+  if (canonical.exists) score += 30
+
+  return Math.min(score, 100)
+}
+
+/**
+ * 基于 4 层模型计算 SEO 就绪度分数
+ * 第1层（40%）：可抓取性和可索引性
+ * 第2层（35%）：基础页面优化
+ * 第3层（15%）：技术和用户体验信号
+ * 第4层（10%）：SEO 机会
+ */
+function calculateSEOReadiness(
+  crawlability: CrawlabilityInfo,
+  canonical: CanonicalInfo,
+  meta: MetaInfo,
+  headings: HeadingsStructure,
+  mobileFriendly: MeasureResponse['mobileFriendly'],
+  coreWebVitals: MeasureResponse['coreWebVitals'],
+  isHttps: boolean
+): SEOReadinessScores {
+  const crawlabilityFinal = calculateCrawlabilityScore(crawlability, canonical)
+  const basicOnPageFinal = calculateBasicOnPageScore(meta, headings)
+  const techExperienceFinal = calculateTechExperienceScore(coreWebVitals, mobileFriendly, isHttps)
+  const seoOpportunityFinal = calculateSEOOpportunityScore(meta, headings, canonical)
+
+  // 加权总分
+  const overall =
+    crawlabilityFinal * 0.4 + basicOnPageFinal * 0.35 + techExperienceFinal * 0.15 + seoOpportunityFinal * 0.1
+
+  return {
+    crawlability: crawlabilityFinal,
+    basicOnPage: basicOnPageFinal,
+    techExperience: techExperienceFinal,
+    seoOpportunity: seoOpportunityFinal,
+    overall: Math.round(overall)
+  }
+}
+
 const TITLE_LIMIT = 60
 const DESCRIPTION_LIMIT = 160
 
@@ -343,12 +602,13 @@ const locateSitemap = async (rootUrl: string): Promise<ResourceStatus> => {
   )
 }
 
+// 调用 PageSpeed API
 async function callPageSpeedApi(payloadUrl: string, strategy: 'mobile' | 'desktop') {
   const pagespeedUrl = new URL(PAGESPEED_URL)
   pagespeedUrl.searchParams.set('url', payloadUrl)
   pagespeedUrl.searchParams.set('strategy', strategy)
-  // Don't specify category to get all categories (performance, accessibility, best-practices, seo, pwa)
-  // This ensures we get complete Lighthouse data including all audits
+  // 不指定 category 以获取所有类别（performance, accessibility, best-practices, seo, pwa）
+  // 确保获取完整的 Lighthouse 数据，包括所有审计项
 
   const apiKey = process.env.PAGESPEED_API_KEY || process.env.NEXT_PUBLIC_PAGESPEED_API_KEY
   if (apiKey) {
@@ -356,11 +616,11 @@ async function callPageSpeedApi(payloadUrl: string, strategy: 'mobile' | 'deskto
   }
 
   const response = await fetch(pagespeedUrl.toString(), {
-    next: { revalidate: 60 }
+    next: { revalidate: 120 }
   })
 
   if (!response.ok) {
-    const detail = await response.text().catch(() => 'Unknown error from PageSpeed Insights.')
+    const detail = await response.text().catch(() => 'PageSpeed Insights 未知错误')
     throw new Error(detail.slice(0, 1024))
   }
 
@@ -388,6 +648,26 @@ export async function measurePageSpeed(
   ])
   const htmlContent = snapshot.html || ''
   const lighthouse = data.lighthouseResult
+  const cleanedText = stripTags(htmlContent)
+
+  // SEO 检测逻辑
+  const httpStatus = snapshot.status
+  const isBlockedByRobots = await checkRobotsBlocking(normalizedUrl, rootUrl)
+  const { hasNoindex, hasNofollow } = checkNoindexNofollow(htmlContent)
+  const requiresJsForContent =
+    /<script[^>]*>[\s\S]*?document\.(write|createElement)/i.test(htmlContent) && cleanedText.length < 100
+  const isAccessible = httpStatus === 200 && !isBlockedByRobots && !hasNoindex
+
+  const crawlability: CrawlabilityInfo = {
+    httpStatus,
+    isBlockedByRobots,
+    hasNoindex,
+    hasNofollow,
+    requiresJsForContent,
+    isAccessible
+  }
+
+  const canonical = extractCanonical(htmlContent, normalizedUrl)
 
   const performanceScore =
     typeof lighthouse?.categories?.performance?.score === 'number'
@@ -443,22 +723,23 @@ export async function measurePageSpeed(
     detail:
       mobileAudit?.displayValue ||
       mobileAudit?.description ||
-      'Lighthouse evaluated viewport, tap targets, and text sizing for mobile experience.',
+      'PageSpeed evaluated viewport, tap targets, and text sizing for mobile experience.',
     message:
       mobileFriendlyStatus === 'pass'
         ? 'Viewport and tap targets pass mobile-friendly checks.'
         : mobileFriendlyStatus === 'fail'
-          ? 'Lighthouse detected mobile-specific issues that need attention.'
+          ? 'PageSpeed detected mobile-specific issues that need attention.'
           : 'Mobile-friendly status is not available for this scan.'
   }
 
-  const performanceLabel = `Lighthouse (${strategy})`
-  const performanceDetail = `Measured ${normalizedUrl} with PageSpeed Insights (${strategy}). ${coreWebVitals.fieldSummary}`
-  const cleanedText = stripTags(htmlContent)
+  const performanceLabel = `PageSpeed (${strategy})`
+  const performanceDetail = `使用 PageSpeed Insights (${strategy}) 测量 ${normalizedUrl}。${coreWebVitals.fieldSummary}`
   const wordCount = cleanedText ? cleanedText.split(' ').filter(Boolean).length : 0
 
   const title = extractTitle(htmlContent)
   const description = extractMetaDescription(htmlContent)
+
+  const headings = analyzeHeadings(htmlContent, title)
 
   const meta: MetaInfo = {
     title,
@@ -471,7 +752,7 @@ export async function measurePageSpeed(
     descriptionStatus: !description ? 'missing' : description.length > DESCRIPTION_LIMIT ? 'long' : 'within'
   }
 
-  // Extract complete Lighthouse data for pageSpeedMeta
+  // 提取完整的 Lighthouse 数据用于 pageSpeedMeta
   const pageSpeedMeta: PageSpeedMeta | undefined = lighthouse
     ? {
         fetchTime: lighthouse.fetchTime || data.analysisUTCTimestamp,
@@ -508,6 +789,16 @@ export async function measurePageSpeed(
       }
     : undefined
 
+  const seoReadiness = calculateSEOReadiness(
+    crawlability,
+    canonical,
+    meta,
+    headings,
+    mobileFriendly,
+    coreWebVitals,
+    isHttps
+  )
+
   return {
     measuredAt: new Date().toISOString(),
     measuredUrl: normalizedUrl,
@@ -528,6 +819,10 @@ export async function measurePageSpeed(
       textCharacters: cleanedText.length,
       wordCount
     },
+    crawlability,
+    canonical,
+    headings,
+    seoReadiness,
     pageSpeedMeta,
     loadingExperience: data.loadingExperience,
     originLoadingExperience: data.originLoadingExperience

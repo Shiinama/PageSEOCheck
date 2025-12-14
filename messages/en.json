@@ -24,6 +24,8 @@
     },
     "form": {
       "continueWithGoogle": "Continue with Google",
+      "continueWithTwitter": "Continue with Twitter",
+      "continueWithDiscord": "Continue with Discord",
       "continueWithGithub": "Continue with GitHub",
       "orContinueWith": "Or continue with",
       "emailPlaceholder": "Enter your email",
@@ -179,5 +181,165 @@
     "metaDescription": "Explore our latest articles on beauty analysis, AI technology, and facial aesthetics. Discover expert insights, tips, and trends in the world of AI-powered beauty assessment.",
     "noArticles": "No articles available",
     "publishedAt": "Published at {date}"
+  },
+  "seoChecker": {
+    "metaTitle": "SEO Checker – Free SEO Analysis Tool for Any Website",
+    "metaDescription": "Check your website SEO for free. Analyze performance, speed, Core Web Vitals, and SEO issues instantly. Simple, fast, and no signup.",
+    "title": "Free SEO Analysis Tool For Any Website",
+    "description": "Check your website SEO for free. Analyze performance, speed, Core Web Vitals, and SEO issues instantly. Simple, fast, and no signup.",
+    "analysisPanel": {
+      "liveAnalysis": "Live analysis",
+      "title": "Get instant insights",
+      "description": "Enter any public URL and we crawl, audit, and summarize the most impactful SEO signals for you.",
+      "lastRun": "Last run",
+      "scoresUpdate": "Scores update every time you request a check.",
+      "targetUrlLabel": "Target URL",
+      "urlPlaceholder": "https://example.com/page-to-audit",
+      "analyzing": "Analyzing...",
+      "analyzeButton": "Analyze URL",
+      "validationError": "Please provide a URL to analyze.",
+      "analyzingWait": "Analyzing... please wait for the latest data.",
+      "noResults": "No results yet. Submit a URL to start the audit."
+    },
+    "results": {
+      "signalOverview": "Signal overview",
+      "title": "Critical metrics in one glance",
+      "scoresUpdate": "Scores are updated every time you request a check."
+    },
+    "signalOverview": {
+      "seoReadiness": "SEO Readiness",
+      "performance": "Performance",
+      "live": "Live",
+      "notSeoReady": "Not SEO Ready",
+      "optimizable": "Optimizable",
+      "seoReady": "SEO Ready",
+      "crawlability": "Crawlability",
+      "onPage": "On-Page",
+      "content": "Content",
+      "tech": "Tech",
+      "opportunity": "Opportunity"
+    },
+    "seoReadinessPanel": {
+      "title": "SEO Readiness Breakdown",
+      "subtitle": "5-layer model assessment",
+      "layer1": {
+        "title": "1. Crawlability & Indexability",
+        "weight": "30% weight",
+        "httpStatus": "HTTP Status",
+        "blockedByRobots": "Blocked by robots.txt",
+        "hasNoindex": "Has noindex",
+        "canonical": "Canonical",
+        "valid": "Valid",
+        "pointsElsewhere": "Points elsewhere",
+        "missing": "Missing"
+      },
+      "layer2": {
+        "title": "2. Basic On-Page",
+        "weight": "25% weight",
+        "titleLabel": "Title",
+        "description": "Description",
+        "h1Count": "H1 Count",
+        "unique": "Unique",
+        "multiple": "Multiple",
+        "h2h3Structure": "H2/H3 Structure"
+      },
+      "layer3": {
+        "title": "3. Tech & UX Signals",
+        "weight": "15% weight",
+        "lcp": "LCP",
+        "mobileFriendly": "Mobile Friendly",
+        "https": "HTTPS"
+      },
+      "layer4": {
+        "title": "4. SEO Opportunity",
+        "weight": "10% weight",
+        "structureQuality": "Structure Quality",
+        "good": "Good",
+        "needsImprovement": "Needs improvement"
+      },
+      "overall": {
+        "title": "Overall SEO Readiness",
+        "notSeoReady": "Not SEO Ready - Critical issues need fixing",
+        "optimizable": "Optimizable - Good foundation, needs improvement",
+        "seoReady": "SEO Ready - Worth investing in content & links"
+      },
+      "yes": "Yes",
+      "no": "No",
+      "tooLong": "Too long"
+    },
+    "insightsPanel": {
+      "title": "PageSpeed insights",
+      "subtitle": "Expand on the lab results",
+      "labDataSnapshot": "Lab data snapshot",
+      "coreLabMetrics": {
+        "title": "Core lab metrics",
+        "description": "Performance measurements from PageSpeed",
+        "firstContentfulPaint": "First Contentful Paint",
+        "largestContentfulPaint": "Largest Contentful Paint",
+        "speedIndex": "Speed Index",
+        "timeToInteractive": "Time to Interactive",
+        "totalBlockingTime": "Total Blocking Time",
+        "maxPotentialFid": "Max Potential FID",
+        "cumulativeLayoutShift": "Cumulative Layout Shift"
+      },
+      "resourceSummary": {
+        "title": "Resource summary",
+        "description": "Network transfer and request statistics",
+        "totalRequests": "Total requests",
+        "totalTransfer": "Total transfer",
+        "scriptTransfer": "Script transfer",
+        "thirdPartyTransfer": "Third-party transfer"
+      },
+      "scanningEnvironment": {
+        "title": "Scanning environment",
+        "description": "Device and network configuration",
+        "device": "Device",
+        "benchmark": "Benchmark",
+        "networkUA": "Network UA",
+        "hostUA": "Host UA",
+        "unknown": "Unknown"
+      },
+      "opportunities": {
+        "title": "Opportunities",
+        "description": "Optimization suggestions",
+        "renderBlocking": "Render blocking",
+        "unusedJavascript": "Unused JavaScript",
+        "legacyJavascript": "Legacy JavaScript",
+        "cacheHints": "Cache hints",
+        "noIssuesReported": "No issues reported"
+      }
+    },
+    "siteSummary": {
+      "title": "Scope & security",
+      "rootSite": "Root site",
+      "specificPage": "Specific page",
+      "analyzedHost": "Analyzed host",
+      "protocol": "Protocol",
+      "https": "HTTPS",
+      "httpOnly": "HTTP only"
+    },
+    "indexingPanel": {
+      "title": "Indexing hints",
+      "subtitle": "Robots & sitemaps",
+      "robotsTxt": "Robots.txt",
+      "sitemap": "Sitemap",
+      "present": "Present",
+      "missing": "Missing",
+      "unavailable": "Unavailable"
+    },
+    "metaContentPanel": {
+      "title": "Meta & content",
+      "subtitle": "Meta lengths",
+      "titleLabel": "Title",
+      "description": "Description",
+      "missing": "Missing",
+      "tooLong": "Too long ({length}/{limit})",
+      "withinLimit": "Within limit ({length}/{limit})",
+      "contentSummary": "Content summary",
+      "contentTextLength": "Content text length:",
+      "characters": "characters",
+      "wordCount": "Word count:",
+      "htmlSize": "HTML size:"
+    }
   }
 }

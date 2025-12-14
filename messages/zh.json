@@ -25,6 +25,8 @@
     },
     "form": {
       "continueWithGoogle": "使用 Google 继续",
+      "continueWithTwitter": "使用 Twitter 继续",
+      "continueWithDiscord": "使用 Discord 继续",
       "continueWithGithub": "使用 GitHub 继续",
       "orContinueWith": "或继续使用",
       "emailPlaceholder": "输入您的电子邮件",
@@ -183,6 +185,166 @@
     "imageGenerator": {
       "title": "Cloudflare 图像生成器",
       "description": "使用 Cloudflare Workers AI 生成高质量图像，每次请求前需完成 Turnstile 人机验证。"
+    }
+  },
+  "seoChecker": {
+    "metaTitle": "SEO 检查器 – 免费网站 SEO 分析工具",
+    "metaDescription": "免费检查您的网站 SEO。即时分析性能、速度、Core Web Vitals 和 SEO 问题。简单、快速，无需注册。",
+    "title": "免费网站 SEO 分析工具",
+    "description": "免费检查您的网站 SEO。即时分析性能、速度、Core Web Vitals 和 SEO 问题。简单、快速，无需注册。",
+    "analysisPanel": {
+      "liveAnalysis": "实时分析",
+      "title": "获取即时洞察",
+      "description": "输入任何公开 URL，我们将为您抓取、审核并总结最具影响力的 SEO 信号。",
+      "lastRun": "上次运行",
+      "scoresUpdate": "每次请求检查时，分数都会更新。",
+      "targetUrlLabel": "目标 URL",
+      "urlPlaceholder": "https://example.com/page-to-audit",
+      "analyzing": "分析中...",
+      "analyzeButton": "分析 URL",
+      "validationError": "请提供要分析的 URL。",
+      "analyzingWait": "分析中... 请等待最新数据。",
+      "noResults": "暂无结果。提交 URL 以开始审核。"
+    },
+    "results": {
+      "signalOverview": "信号概览",
+      "title": "关键指标一目了然",
+      "scoresUpdate": "每次请求检查时，分数都会更新。"
+    },
+    "signalOverview": {
+      "seoReadiness": "SEO 就绪度",
+      "performance": "性能",
+      "live": "实时",
+      "notSeoReady": "未就绪",
+      "optimizable": "可优化",
+      "seoReady": "已就绪",
+      "crawlability": "可抓取性",
+      "onPage": "页面基础",
+      "content": "内容",
+      "tech": "技术",
+      "opportunity": "机会"
+    },
+    "seoReadinessPanel": {
+      "title": "SEO 就绪度分解",
+      "subtitle": "5 层模型评估",
+      "layer1": {
+        "title": "1. 可抓取性与可索引性",
+        "weight": "30% 权重",
+        "httpStatus": "HTTP 状态",
+        "blockedByRobots": "被 robots.txt 阻止",
+        "hasNoindex": "有 noindex",
+        "canonical": "规范链接",
+        "valid": "有效",
+        "pointsElsewhere": "指向其他位置",
+        "missing": "缺失"
+      },
+      "layer2": {
+        "title": "2. 页面基础",
+        "weight": "25% 权重",
+        "titleLabel": "标题",
+        "description": "描述",
+        "h1Count": "H1 数量",
+        "unique": "唯一",
+        "multiple": "多个",
+        "h2h3Structure": "H2/H3 结构"
+      },
+      "layer3": {
+        "title": "3. 技术与用户体验信号",
+        "weight": "15% 权重",
+        "lcp": "LCP",
+        "mobileFriendly": "移动友好",
+        "https": "HTTPS"
+      },
+      "layer4": {
+        "title": "4. SEO 机会",
+        "weight": "10% 权重",
+        "structureQuality": "结构质量",
+        "good": "良好",
+        "needsImprovement": "需要改进"
+      },
+      "overall": {
+        "title": "总体 SEO 就绪度",
+        "notSeoReady": "未就绪 - 需要修复关键问题",
+        "optimizable": "可优化 - 基础良好，需要改进",
+        "seoReady": "已就绪 - 值得投资内容和链接"
+      },
+      "yes": "是",
+      "no": "否",
+      "tooLong": "过长"
+    },
+    "insightsPanel": {
+      "title": "PageSpeed 洞察",
+      "subtitle": "扩展实验室结果",
+      "labDataSnapshot": "实验室数据快照",
+      "coreLabMetrics": {
+        "title": "核心实验室指标",
+        "description": "来自 PageSpeed 的性能测量",
+        "firstContentfulPaint": "首次内容绘制",
+        "largestContentfulPaint": "最大内容绘制",
+        "speedIndex": "速度指数",
+        "timeToInteractive": "可交互时间",
+        "totalBlockingTime": "总阻塞时间",
+        "maxPotentialFid": "最大潜在 FID",
+        "cumulativeLayoutShift": "累积布局偏移"
+      },
+      "resourceSummary": {
+        "title": "资源摘要",
+        "description": "网络传输和请求统计",
+        "totalRequests": "总请求数",
+        "totalTransfer": "总传输量",
+        "scriptTransfer": "脚本传输",
+        "thirdPartyTransfer": "第三方传输"
+      },
+      "scanningEnvironment": {
+        "title": "扫描环境",
+        "description": "设备和网络配置",
+        "device": "设备",
+        "benchmark": "基准",
+        "networkUA": "网络 UA",
+        "hostUA": "主机 UA",
+        "unknown": "未知"
+      },
+      "opportunities": {
+        "title": "优化机会",
+        "description": "优化建议",
+        "renderBlocking": "渲染阻塞",
+        "unusedJavascript": "未使用的 JavaScript",
+        "legacyJavascript": "旧版 JavaScript",
+        "cacheHints": "缓存提示",
+        "noIssuesReported": "未报告问题"
+      }
+    },
+    "siteSummary": {
+      "title": "范围与安全",
+      "rootSite": "根站点",
+      "specificPage": "特定页面",
+      "analyzedHost": "分析的主机",
+      "protocol": "协议",
+      "https": "HTTPS",
+      "httpOnly": "仅 HTTP"
+    },
+    "indexingPanel": {
+      "title": "索引提示",
+      "subtitle": "Robots 和站点地图",
+      "robotsTxt": "Robots.txt",
+      "sitemap": "站点地图",
+      "present": "存在",
+      "missing": "缺失",
+      "unavailable": "不可用"
+    },
+    "metaContentPanel": {
+      "title": "元数据与内容",
+      "subtitle": "元数据长度",
+      "titleLabel": "标题",
+      "description": "描述",
+      "missing": "缺失",
+      "tooLong": "过长 ({length}/{limit})",
+      "withinLimit": "在限制内 ({length}/{limit})",
+      "contentSummary": "内容摘要",
+      "contentTextLength": "内容文本长度：",
+      "characters": "字符",
+      "wordCount": "字数：",
+      "htmlSize": "HTML 大小："
     }
   }
 }

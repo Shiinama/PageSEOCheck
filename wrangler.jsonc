@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "page-seo-check",
+	"name": "seo-checker",
 	"main": "worker.ts",
 	"compatibility_date": "2025-04-22",
 	"compatibility_flags": [
@@ -44,7 +44,7 @@
 	"services": [
 		{
 			"binding": "WORKER_SELF_REFERENCE",
-			"service": "page-seo-check"
+			"service": "seo-checker"
 		}
 	],
 	"kv_namespaces": [

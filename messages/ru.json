@@ -10,6 +10,8 @@
     },
     "form": {
       "continueWithGoogle": "Продолжить с Google",
+      "continueWithTwitter": "Продолжить с Twitter",
+      "continueWithDiscord": "Продолжить с Discord",
       "continueWithGithub": "Продолжить с GitHub",
       "orContinueWith": "Или продолжить с",
       "emailPlaceholder": "Введите ваш адрес электронной почты",
@@ -183,6 +185,166 @@
     "imageGenerator": {
       "title": "Cloudflare Image Generator",
       "description": "Generate high-quality visuals with Cloudflare Workers AI. Complete the Turnstile challenge before each request."
+    }
+  },
+  "seoChecker": {
+    "metaTitle": "SEO Checker – Бесплатный инструмент анализа SEO для любого сайта",
+    "metaDescription": "Проверьте SEO вашего сайта бесплатно. Анализируйте производительность, скорость, Core Web Vitals и проблемы SEO мгновенно. Просто, быстро и без регистрации.",
+    "title": "Бесплатный инструмент анализа SEO для любого сайта",
+    "description": "Проверьте SEO вашего сайта бесплатно. Анализируйте производительность, скорость, Core Web Vitals и проблемы SEO мгновенно. Просто, быстро и без регистрации.",
+    "analysisPanel": {
+      "liveAnalysis": "Живой анализ",
+      "title": "Получите мгновенные инсайты",
+      "description": "Введите любой публичный URL, и мы просканируем, проаудируем и обобщим наиболее влиятельные SEO-сигналы для вас.",
+      "lastRun": "Последний запуск",
+      "scoresUpdate": "Оценки обновляются каждый раз при запросе проверки.",
+      "targetUrlLabel": "Целевой URL",
+      "urlPlaceholder": "https://example.com/page-to-audit",
+      "analyzing": "Анализ...",
+      "analyzeButton": "Анализировать URL",
+      "validationError": "Пожалуйста, укажите URL для анализа.",
+      "analyzingWait": "Анализ... пожалуйста, подождите последние данные.",
+      "noResults": "Пока нет результатов. Отправьте URL, чтобы начать аудит."
+    },
+    "results": {
+      "signalOverview": "Обзор сигналов",
+      "title": "Критические метрики одним взглядом",
+      "scoresUpdate": "Оценки обновляются каждый раз при запросе проверки."
+    },
+    "signalOverview": {
+      "seoReadiness": "Готовность к SEO",
+      "performance": "Производительность",
+      "live": "В прямом эфире",
+      "notSeoReady": "Не готов к SEO",
+      "optimizable": "Оптимизируемо",
+      "seoReady": "Готов к SEO",
+      "crawlability": "Доступность для сканирования",
+      "onPage": "На странице",
+      "content": "Контент",
+      "tech": "Технологии",
+      "opportunity": "Возможность"
+    },
+    "seoReadinessPanel": {
+      "title": "Разбивка готовности к SEO",
+      "subtitle": "Оценка по 5-слойной модели",
+      "layer1": {
+        "title": "1. Доступность для сканирования и индексации",
+        "weight": "30% веса",
+        "httpStatus": "HTTP статус",
+        "blockedByRobots": "Заблокировано robots.txt",
+        "hasNoindex": "Имеет noindex",
+        "canonical": "Канонический",
+        "valid": "Действительный",
+        "pointsElsewhere": "Указывает в другое место",
+        "missing": "Отсутствует"
+      },
+      "layer2": {
+        "title": "2. Базовые элементы на странице",
+        "weight": "25% веса",
+        "titleLabel": "Заголовок",
+        "description": "Описание",
+        "h1Count": "Количество H1",
+        "unique": "Уникальный",
+        "multiple": "Множественный",
+        "h2h3Structure": "Структура H2/H3"
+      },
+      "layer3": {
+        "title": "3. Технические и UX сигналы",
+        "weight": "15% веса",
+        "lcp": "LCP",
+        "mobileFriendly": "Мобильно-дружественный",
+        "https": "HTTPS"
+      },
+      "layer4": {
+        "title": "4. SEO возможность",
+        "weight": "10% веса",
+        "structureQuality": "Качество структуры",
+        "good": "Хорошо",
+        "needsImprovement": "Требует улучшения"
+      },
+      "overall": {
+        "title": "Общая готовность к SEO",
+        "notSeoReady": "Не готов к SEO - Критические проблемы требуют исправления",
+        "optimizable": "Оптимизируемо - Хорошая основа, требует улучшения",
+        "seoReady": "Готов к SEO - Стоит инвестировать в контент и ссылки"
+      },
+      "yes": "Да",
+      "no": "Нет",
+      "tooLong": "Слишком длинный"
+    },
+    "insightsPanel": {
+      "title": "PageSpeed инсайты",
+      "subtitle": "Расширение результатов лаборатории",
+      "labDataSnapshot": "Снимок данных лаборатории",
+      "coreLabMetrics": {
+        "title": "Основные лабораторные метрики",
+        "description": "Измерения производительности от PageSpeed",
+        "firstContentfulPaint": "First Contentful Paint",
+        "largestContentfulPaint": "Largest Contentful Paint",
+        "speedIndex": "Speed Index",
+        "timeToInteractive": "Time to Interactive",
+        "totalBlockingTime": "Total Blocking Time",
+        "maxPotentialFid": "Max Potential FID",
+        "cumulativeLayoutShift": "Cumulative Layout Shift"
+      },
+      "resourceSummary": {
+        "title": "Сводка ресурсов",
+        "description": "Статистика передачи по сети и запросов",
+        "totalRequests": "Всего запросов",
+        "totalTransfer": "Общая передача",
+        "scriptTransfer": "Передача скриптов",
+        "thirdPartyTransfer": "Передача третьих сторон"
+      },
+      "scanningEnvironment": {
+        "title": "Среда сканирования",
+        "description": "Конфигурация устройства и сети",
+        "device": "Устройство",
+        "benchmark": "Бенчмарк",
+        "networkUA": "Сетевой UA",
+        "hostUA": "UA хоста",
+        "unknown": "Неизвестно"
+      },
+      "opportunities": {
+        "title": "Возможности",
+        "description": "Предложения по оптимизации",
+        "renderBlocking": "Блокировка рендеринга",
+        "unusedJavascript": "Неиспользуемый JavaScript",
+        "legacyJavascript": "Устаревший JavaScript",
+        "cacheHints": "Подсказки кэша",
+        "noIssuesReported": "Проблем не сообщено"
+      }
+    },
+    "siteSummary": {
+      "title": "Область и безопасность",
+      "rootSite": "Корневой сайт",
+      "specificPage": "Конкретная страница",
+      "analyzedHost": "Анализируемый хост",
+      "protocol": "Протокол",
+      "https": "HTTPS",
+      "httpOnly": "Только HTTP"
+    },
+    "indexingPanel": {
+      "title": "Подсказки индексации",
+      "subtitle": "Robots и карты сайта",
+      "robotsTxt": "Robots.txt",
+      "sitemap": "Карта сайта",
+      "present": "Присутствует",
+      "missing": "Отсутствует",
+      "unavailable": "Недоступно"
+    },
+    "metaContentPanel": {
+      "title": "Мета и контент",
+      "subtitle": "Длины мета",
+      "titleLabel": "Заголовок",
+      "description": "Описание",
+      "missing": "Отсутствует",
+      "tooLong": "Слишком длинный ({length}/{limit})",
+      "withinLimit": "В пределах лимита ({length}/{limit})",
+      "contentSummary": "Сводка контента",
+      "contentTextLength": "Длина текста контента:",
+      "characters": "символов",
+      "wordCount": "Количество слов:",
+      "htmlSize": "Размер HTML:"
     }
   }
 }

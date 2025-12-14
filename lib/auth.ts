@@ -1,7 +1,8 @@
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import NextAuth from 'next-auth'
+import DiscordProvider from 'next-auth/providers/discord'
 import Google from 'next-auth/providers/google'
-import ResendProvider from 'next-auth/providers/resend'
+import TwitterProvider from 'next-auth/providers/twitter'
 
 import { createDb } from '@/lib/db'
 
@@ -20,8 +21,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth(() => {
     }),
     providers: [
       Google,
-      ResendProvider({
-        from: 'no-reply@getwhynot.org'
+      TwitterProvider({
+        clientId: process.env.TWITTER_CLIENT_ID,
+        clientSecret: process.env.TWITTER_CLIENT_SECRET
+      }),
+      DiscordProvider({
+        clientId: process.env.DISCORD_CLIENT_ID,
+        clientSecret: process.env.DISCORD_CLIENT_SECRET
       })
     ],
     session: {

@@ -14,9 +14,7 @@ import '../globals.css'
 
 export const viewport: Viewport = {
   width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false
+  initialScale: 1
 }
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -10,6 +10,8 @@
     },
     "form": {
       "continueWithGoogle": "استمر مع Google",
+      "continueWithTwitter": "استمر مع Twitter",
+      "continueWithDiscord": "استمر مع Discord",
       "continueWithGithub": "استمر مع GitHub",
       "orContinueWith": "أو استمر مع",
       "emailPlaceholder": "أدخل عنوان البريد الإلكتروني",
@@ -183,6 +185,166 @@
     "imageGenerator": {
       "title": "Cloudflare Image Generator",
       "description": "Generate high-quality visuals with Cloudflare Workers AI. Complete the Turnstile challenge before each request."
+    }
+  },
+  "seoChecker": {
+    "metaTitle": "SEO Checker – أداة تحليل SEO مجانية لأي موقع ويب",
+    "metaDescription": "تحقق من SEO موقعك مجانًا. حلل الأداء والسرعة وCore Web Vitals ومشاكل SEO على الفور. بسيط وسريع وبدون تسجيل.",
+    "title": "أداة تحليل SEO مجانية لأي موقع ويب",
+    "description": "تحقق من SEO موقعك مجانًا. حلل الأداء والسرعة وCore Web Vitals ومشاكل SEO على الفور. بسيط وسريع وبدون تسجيل.",
+    "analysisPanel": {
+      "liveAnalysis": "تحليل مباشر",
+      "title": "احصل على رؤى فورية",
+      "description": "أدخل أي عنوان URL عام وسنقوم بفهرسة ومراجعة وتلخيص إشارات SEO الأكثر تأثيرًا لك.",
+      "lastRun": "آخر تشغيل",
+      "scoresUpdate": "يتم تحديث النقاط في كل مرة تطلب فيها فحصًا.",
+      "targetUrlLabel": "عنوان URL المستهدف",
+      "urlPlaceholder": "https://example.com/page-to-audit",
+      "analyzing": "جارٍ التحليل...",
+      "analyzeButton": "تحليل عنوان URL",
+      "validationError": "يرجى تقديم عنوان URL للتحليل.",
+      "analyzingWait": "جارٍ التحليل... يرجى انتظار أحدث البيانات.",
+      "noResults": "لا توجد نتائج بعد. أرسل عنوان URL لبدء التدقيق."
+    },
+    "results": {
+      "signalOverview": "نظرة عامة على الإشارات",
+      "title": "مقاييس حرجة بنظرة واحدة",
+      "scoresUpdate": "يتم تحديث النقاط في كل مرة تطلب فيها فحصًا."
+    },
+    "signalOverview": {
+      "seoReadiness": "جاهزية SEO",
+      "performance": "الأداء",
+      "live": "مباشر",
+      "notSeoReady": "غير جاهز لـ SEO",
+      "optimizable": "قابل للتحسين",
+      "seoReady": "جاهز لـ SEO",
+      "crawlability": "قابلية الزحف",
+      "onPage": "على الصفحة",
+      "content": "المحتوى",
+      "tech": "التقنية",
+      "opportunity": "الفرصة"
+    },
+    "seoReadinessPanel": {
+      "title": "تفصيل جاهزية SEO",
+      "subtitle": "تقييم نموذج من 5 طبقات",
+      "layer1": {
+        "title": "1. قابلية الزحف والفهرسة",
+        "weight": "30% وزن",
+        "httpStatus": "حالة HTTP",
+        "blockedByRobots": "محظور بواسطة robots.txt",
+        "hasNoindex": "يحتوي على noindex",
+        "canonical": "قانوني",
+        "valid": "صالح",
+        "pointsElsewhere": "يشير إلى مكان آخر",
+        "missing": "مفقود"
+      },
+      "layer2": {
+        "title": "2. الأساسيات على الصفحة",
+        "weight": "25% وزن",
+        "titleLabel": "العنوان",
+        "description": "الوصف",
+        "h1Count": "عدد H1",
+        "unique": "فريد",
+        "multiple": "متعدد",
+        "h2h3Structure": "هيكل H2/H3"
+      },
+      "layer3": {
+        "title": "3. إشارات التقنية وUX",
+        "weight": "15% وزن",
+        "lcp": "LCP",
+        "mobileFriendly": "صديق للجوال",
+        "https": "HTTPS"
+      },
+      "layer4": {
+        "title": "4. فرصة SEO",
+        "weight": "10% وزن",
+        "structureQuality": "جودة الهيكل",
+        "good": "جيد",
+        "needsImprovement": "يحتاج إلى تحسين"
+      },
+      "overall": {
+        "title": "جاهزية SEO الشاملة",
+        "notSeoReady": "غير جاهز لـ SEO - مشاكل حرجة تحتاج إلى إصلاح",
+        "optimizable": "قابل للتحسين - أساس جيد، يحتاج إلى تحسين",
+        "seoReady": "جاهز لـ SEO - يستحق الاستثمار في المحتوى والروابط"
+      },
+      "yes": "نعم",
+      "no": "لا",
+      "tooLong": "طويل جدًا"
+    },
+    "insightsPanel": {
+      "title": "رؤى PageSpeed",
+      "subtitle": "توسيع نتائج المختبر",
+      "labDataSnapshot": "لقطة بيانات المختبر",
+      "coreLabMetrics": {
+        "title": "مقاييس المختبر الأساسية",
+        "description": "قياسات الأداء من PageSpeed",
+        "firstContentfulPaint": "First Contentful Paint",
+        "largestContentfulPaint": "Largest Contentful Paint",
+        "speedIndex": "Speed Index",
+        "timeToInteractive": "Time to Interactive",
+        "totalBlockingTime": "Total Blocking Time",
+        "maxPotentialFid": "Max Potential FID",
+        "cumulativeLayoutShift": "Cumulative Layout Shift"
+      },
+      "resourceSummary": {
+        "title": "ملخص الموارد",
+        "description": "إحصائيات نقل الشبكة والطلبات",
+        "totalRequests": "إجمالي الطلبات",
+        "totalTransfer": "إجمالي النقل",
+        "scriptTransfer": "نقل البرامج النصية",
+        "thirdPartyTransfer": "نقل الطرف الثالث"
+      },
+      "scanningEnvironment": {
+        "title": "بيئة المسح",
+        "description": "تكوين الجهاز والشبكة",
+        "device": "الجهاز",
+        "benchmark": "المعيار",
+        "networkUA": "UA الشبكة",
+        "hostUA": "UA المضيف",
+        "unknown": "غير معروف"
+      },
+      "opportunities": {
+        "title": "الفرص",
+        "description": "اقتراحات التحسين",
+        "renderBlocking": "حظر العرض",
+        "unusedJavascript": "JavaScript غير مستخدم",
+        "legacyJavascript": "JavaScript القديم",
+        "cacheHints": "تلميحات التخزين المؤقت",
+        "noIssuesReported": "لم يتم الإبلاغ عن مشاكل"
+      }
+    },
+    "siteSummary": {
+      "title": "النطاق والأمان",
+      "rootSite": "الموقع الجذري",
+      "specificPage": "صفحة محددة",
+      "analyzedHost": "المضيف المُحلل",
+      "protocol": "البروتوكول",
+      "https": "HTTPS",
+      "httpOnly": "HTTP فقط"
+    },
+    "indexingPanel": {
+      "title": "تلميحات الفهرسة",
+      "subtitle": "Robots وخرائط الموقع",
+      "robotsTxt": "Robots.txt",
+      "sitemap": "خريطة الموقع",
+      "present": "موجود",
+      "missing": "مفقود",
+      "unavailable": "غير متاح"
+    },
+    "metaContentPanel": {
+      "title": "البيانات الوصفية والمحتوى",
+      "subtitle": "أطوال البيانات الوصفية",
+      "titleLabel": "العنوان",
+      "description": "الوصف",
+      "missing": "مفقود",
+      "tooLong": "طويل جدًا ({length}/{limit})",
+      "withinLimit": "ضمن الحد ({length}/{limit})",
+      "contentSummary": "ملخص المحتوى",
+      "contentTextLength": "طول نص المحتوى:",
+      "characters": "أحرف",
+      "wordCount": "عدد الكلمات:",
+      "htmlSize": "حجم HTML:"
     }
   }
 }

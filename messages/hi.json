@@ -10,6 +10,8 @@
     },
     "form": {
       "continueWithGoogle": "Google के साथ जारी रखें",
+      "continueWithTwitter": "Twitter के साथ जारी रखें",
+      "continueWithDiscord": "Discord के साथ जारी रखें",
       "continueWithGithub": "GitHub के साथ जारी रखें",
       "orContinueWith": "या के साथ जारी रखें",
       "emailPlaceholder": "अपना ईमेल पता दर्ज करें",
@@ -183,6 +185,166 @@
     "imageGenerator": {
       "title": "Cloudflare Image Generator",
       "description": "Generate high-quality visuals with Cloudflare Workers AI. Complete the Turnstile challenge before each request."
+    }
+  },
+  "seoChecker": {
+    "metaTitle": "SEO Checker – किसी भी वेबसाइट के लिए मुफ्त SEO विश्लेषण उपकरण",
+    "metaDescription": "अपनी वेबसाइट का SEO मुफ्त में जांचें। प्रदर्शन, गति, Core Web Vitals और SEO समस्याओं का तुरंत विश्लेषण करें। सरल, तेज़ और बिना साइनअप।",
+    "title": "किसी भी वेबसाइट के लिए मुफ्त SEO विश्लेषण उपकरण",
+    "description": "अपनी वेबसाइट का SEO मुफ्त में जांचें। प्रदर्शन, गति, Core Web Vitals और SEO समस्याओं का तुरंत विश्लेषण करें। सरल, तेज़ और बिना साइनअप।",
+    "analysisPanel": {
+      "liveAnalysis": "लाइव विश्लेषण",
+      "title": "तत्काल अंतर्दृष्टि प्राप्त करें",
+      "description": "कोई भी सार्वजनिक URL दर्ज करें और हम आपके लिए सबसे प्रभावशाली SEO सिग्नल को क्रॉल, ऑडिट और सारांशित करते हैं।",
+      "lastRun": "अंतिम रन",
+      "scoresUpdate": "जब भी आप जांच का अनुरोध करते हैं, स्कोर अपडेट होते हैं।",
+      "targetUrlLabel": "लक्ष्य URL",
+      "urlPlaceholder": "https://example.com/page-to-audit",
+      "analyzing": "विश्लेषण कर रहे हैं...",
+      "analyzeButton": "URL विश्लेषण करें",
+      "validationError": "कृपया विश्लेषण के लिए एक URL प्रदान करें।",
+      "analyzingWait": "विश्लेषण कर रहे हैं... कृपया नवीनतम डेटा की प्रतीक्षा करें।",
+      "noResults": "अभी तक कोई परिणाम नहीं। ऑडिट शुरू करने के लिए एक URL सबमिट करें।"
+    },
+    "results": {
+      "signalOverview": "सिग्नल अवलोकन",
+      "title": "एक नज़र में महत्वपूर्ण मेट्रिक्स",
+      "scoresUpdate": "जब भी आप जांच का अनुरोध करते हैं, स्कोर अपडेट होते हैं।"
+    },
+    "signalOverview": {
+      "seoReadiness": "SEO तत्परता",
+      "performance": "प्रदर्शन",
+      "live": "लाइव",
+      "notSeoReady": "SEO के लिए तैयार नहीं",
+      "optimizable": "अनुकूलन योग्य",
+      "seoReady": "SEO के लिए तैयार",
+      "crawlability": "क्रॉल क्षमता",
+      "onPage": "ऑन-पेज",
+      "content": "सामग्री",
+      "tech": "तकनीक",
+      "opportunity": "अवसर"
+    },
+    "seoReadinessPanel": {
+      "title": "SEO तत्परता विभाजन",
+      "subtitle": "5-परत मॉडल मूल्यांकन",
+      "layer1": {
+        "title": "1. क्रॉल क्षमता और इंडेक्स क्षमता",
+        "weight": "30% वजन",
+        "httpStatus": "HTTP स्थिति",
+        "blockedByRobots": "robots.txt द्वारा अवरुद्ध",
+        "hasNoindex": "noindex है",
+        "canonical": "कैनोनिकल",
+        "valid": "वैध",
+        "pointsElsewhere": "कहीं और इंगित करता है",
+        "missing": "गुम"
+      },
+      "layer2": {
+        "title": "2. बुनियादी ऑन-पेज",
+        "weight": "25% वजन",
+        "titleLabel": "शीर्षक",
+        "description": "विवरण",
+        "h1Count": "H1 गिनती",
+        "unique": "अद्वितीय",
+        "multiple": "कई",
+        "h2h3Structure": "H2/H3 संरचना"
+      },
+      "layer3": {
+        "title": "3. तकनीकी और UX सिग्नल",
+        "weight": "15% वजन",
+        "lcp": "LCP",
+        "mobileFriendly": "मोबाइल अनुकूल",
+        "https": "HTTPS"
+      },
+      "layer4": {
+        "title": "4. SEO अवसर",
+        "weight": "10% वजन",
+        "structureQuality": "संरचना गुणवत्ता",
+        "good": "अच्छा",
+        "needsImprovement": "सुधार की आवश्यकता"
+      },
+      "overall": {
+        "title": "समग्र SEO तत्परता",
+        "notSeoReady": "SEO के लिए तैयार नहीं - महत्वपूर्ण समस्याओं को ठीक करने की आवश्यकता",
+        "optimizable": "अनुकूलन योग्य - अच्छा आधार, सुधार की आवश्यकता",
+        "seoReady": "SEO के लिए तैयार - सामग्री और लिंक में निवेश के लायक"
+      },
+      "yes": "हाँ",
+      "no": "नहीं",
+      "tooLong": "बहुत लंबा"
+    },
+    "insightsPanel": {
+      "title": "PageSpeed अंतर्दृष्टि",
+      "subtitle": "प्रयोगशाला परिणामों का विस्तार",
+      "labDataSnapshot": "प्रयोगशाला डेटा स्नैपशॉट",
+      "coreLabMetrics": {
+        "title": "कोर प्रयोगशाला मेट्रिक्स",
+        "description": "PageSpeed से प्रदर्शन माप",
+        "firstContentfulPaint": "First Contentful Paint",
+        "largestContentfulPaint": "Largest Contentful Paint",
+        "speedIndex": "Speed Index",
+        "timeToInteractive": "Time to Interactive",
+        "totalBlockingTime": "Total Blocking Time",
+        "maxPotentialFid": "Max Potential FID",
+        "cumulativeLayoutShift": "Cumulative Layout Shift"
+      },
+      "resourceSummary": {
+        "title": "संसाधन सारांश",
+        "description": "नेटवर्क स्थानांतरण और अनुरोध आंकड़े",
+        "totalRequests": "कुल अनुरोध",
+        "totalTransfer": "कुल स्थानांतरण",
+        "scriptTransfer": "स्क्रिप्ट स्थानांतरण",
+        "thirdPartyTransfer": "तीसरे पक्ष का स्थानांतरण"
+      },
+      "scanningEnvironment": {
+        "title": "स्कैनिंग वातावरण",
+        "description": "डिवाइस और नेटवर्क कॉन्फ़िगरेशन",
+        "device": "डिवाइस",
+        "benchmark": "बेंचमार्क",
+        "networkUA": "नेटवर्क UA",
+        "hostUA": "होस्ट UA",
+        "unknown": "अज्ञात"
+      },
+      "opportunities": {
+        "title": "अवसर",
+        "description": "अनुकूलन सुझाव",
+        "renderBlocking": "रेंडर ब्लॉकिंग",
+        "unusedJavascript": "अनुपयोगी JavaScript",
+        "legacyJavascript": "लेगेसी JavaScript",
+        "cacheHints": "कैश संकेत",
+        "noIssuesReported": "कोई समस्या रिपोर्ट नहीं की गई"
+      }
+    },
+    "siteSummary": {
+      "title": "दायरा और सुरक्षा",
+      "rootSite": "रूट साइट",
+      "specificPage": "विशिष्ट पृष्ठ",
+      "analyzedHost": "विश्लेषित होस्ट",
+      "protocol": "प्रोटोकॉल",
+      "https": "HTTPS",
+      "httpOnly": "केवल HTTP"
+    },
+    "indexingPanel": {
+      "title": "इंडेक्सिंग संकेत",
+      "subtitle": "Robots और साइटमैप",
+      "robotsTxt": "Robots.txt",
+      "sitemap": "साइटमैप",
+      "present": "उपस्थित",
+      "missing": "गुम",
+      "unavailable": "अनुपलब्ध"
+    },
+    "metaContentPanel": {
+      "title": "मेटा और सामग्री",
+      "subtitle": "मेटा लंबाई",
+      "titleLabel": "शीर्षक",
+      "description": "विवरण",
+      "missing": "गुम",
+      "tooLong": "बहुत लंबा ({length}/{limit})",
+      "withinLimit": "सीमा के भीतर ({length}/{limit})",
+      "contentSummary": "सामग्री सारांश",
+      "contentTextLength": "सामग्री पाठ लंबाई:",
+      "characters": "वर्ण",
+      "wordCount": "शब्द गिनती:",
+      "htmlSize": "HTML आकार:"
     }
   }
 }

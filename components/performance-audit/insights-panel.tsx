@@ -1,37 +1,38 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import type { MeasureResponse } from '@/lib/measure'
 
 type MetricDefinition = {
   key: string
-  label: string
+  labelKey: string
   format: (value: number) => string
 }
 
 const METRIC_AUDITS: MetricDefinition[] = [
   {
     key: 'first-contentful-paint',
-    label: 'First Contentful Paint',
+    labelKey: 'firstContentfulPaint',
     format: (value) => `${(value / 1000).toFixed(1)}s`
   },
   {
     key: 'largest-contentful-paint',
-    label: 'Largest Contentful Paint',
+    labelKey: 'largestContentfulPaint',
     format: (value) => `${(value / 1000).toFixed(1)}s`
   },
-  { key: 'speed-index', label: 'Speed Index', format: (value) => `${Math.round(value)}ms` },
-  { key: 'interactive', label: 'Time to Interactive', format: (value) => `${(value / 1000).toFixed(1)}s` },
-  { key: 'total-blocking-time', label: 'Total Blocking Time', format: (value) => `${Math.round(value)}ms` },
-  { key: 'max-potential-fid', label: 'Max Potential FID', format: (value) => `${Math.round(value)}ms` },
-  { key: 'cumulative-layout-shift', label: 'Cumulative Layout Shift', format: (value) => value.toFixed(2) }
+  { key: 'speed-index', labelKey: 'speedIndex', format: (value) => `${Math.round(value)}ms` },
+  { key: 'interactive', labelKey: 'timeToInteractive', format: (value) => `${(value / 1000).toFixed(1)}s` },
+  { key: 'total-blocking-time', labelKey: 'totalBlockingTime', format: (value) => `${Math.round(value)}ms` },
+  { key: 'max-potential-fid', labelKey: 'maxPotentialFid', format: (value) => `${Math.round(value)}ms` },
+  { key: 'cumulative-layout-shift', labelKey: 'cumulativeLayoutShift', format: (value) => value.toFixed(2) }
 ]
 
-const OPPORTUNITY_AUDITS: Array<{ key: string; label: string }> = [
-  { key: 'render-blocking-insight', label: 'Render blocking' },
-  { key: 'unused-javascript', label: 'Unused JavaScript' },
-  { key: 'legacy-javascript-insight', label: 'Legacy JavaScript' },
-  { key: 'cache-insight', label: 'Cache hints' },
-  { key: 'third-parties-insight', label: 'Third parties' }
+const OPPORTUNITY_AUDITS: Array<{ key: string; labelKey: string }> = [
+  { key: 'render-blocking-insight', labelKey: 'renderBlocking' },
+  { key: 'unused-javascript', labelKey: 'unusedJavascript' },
+  { key: 'legacy-javascript-insight', labelKey: 'legacyJavascript' },
+  { key: 'cache-insight', labelKey: 'cacheHints' }
 ]
 
 const formatBytes = (value?: number) =>
@@ -57,6 +58,7 @@ type InsightsPanelProps = {
 }
 
 export default function InsightsPanel({ measurement }: InsightsPanelProps) {
+  const t = useTranslations('seoChecker.insightsPanel')
   const audits = measurement.pageSpeedMeta?.audits
   const configSettings = measurement.pageSpeedMeta?.configSettings
   const environment = measurement.pageSpeedMeta?.environment
@@ -75,36 +77,34 @@ export default function InsightsPanel({ measurement }: InsightsPanelProps) {
     <div className="w-full min-w-0">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0 flex-1">
-          <p className="text-muted-foreground text-xs font-medium tracking-[0.4em] uppercase">Lighthouse insights</p>
-          <h4 className="text-foreground mt-2 text-xl font-semibold">Expand on the lab results</h4>
+          <p className="text-muted-foreground text-xs font-medium tracking-[0.4em] uppercase">{t('title')}</p>
+          <h4 className="text-foreground mt-2 text-xl font-semibold">{t('subtitle')}</h4>
         </div>
         <p className="text-muted-foreground shrink-0 text-xs font-medium">
           {measurement.pageSpeedMeta?.fetchTime
             ? new Date(measurement.pageSpeedMeta.fetchTime).toLocaleString()
-            : 'Lab data snapshot'}
+            : t('labDataSnapshot')}
         </p>
       </div>
 
       <div className="mt-8 space-y-8">
         <section>
-          <div className="mb-4">
-            <p className="text-foreground text-sm font-semibold">Core lab metrics</p>
-            <p className="text-muted-foreground mt-1 text-xs">Performance measurements from Lighthouse</p>
+          <div className="mb-6">
+            <p className="text-foreground text-sm font-semibold">{t('coreLabMetrics.title')}</p>
+            <p className="text-muted-foreground mt-1 text-xs">{t('coreLabMetrics.description')}</p>
           </div>
-          <dl className="space-y-5">
-            {METRIC_AUDITS.map((metric, index) => {
+          <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {METRIC_AUDITS.map((metric) => {
               const audit = audits?.[metric.key]
-              const isLast = index === METRIC_AUDITS.length - 1
               return (
-                <div key={metric.key} className="space-y-2">
-                  <dt className="text-muted-foreground text-xs font-medium tracking-[0.3em] uppercase">
-                    {metric.label}
+                <div
+                  key={metric.key}
+                  className="border-border/40 bg-muted/20 rounded-xl border p-4 transition-shadow hover:shadow-sm"
+                >
+                  <dt className="text-muted-foreground mb-2 text-xs font-medium tracking-[0.2em] uppercase">
+                    {t(`coreLabMetrics.${metric.labelKey}`)}
                   </dt>
                   <dd className="text-primary text-2xl font-bold">{formatMetricValue(audit, metric.format)}</dd>
-                  {audit?.description && (
-                    <p className="text-muted-foreground mt-2 text-xs leading-relaxed">{audit.description}</p>
-                  )}
-                  {!isLast && <div className="border-border/40 mt-4 border-b" aria-hidden="true" />}
                 </div>
               )
             })}
@@ -113,35 +113,28 @@ export default function InsightsPanel({ measurement }: InsightsPanelProps) {
 
         <div className="border-border/40 border-t pt-8">
           <section>
-            <div className="mb-4">
-              <p className="text-foreground text-sm font-semibold">Resource summary</p>
-              <p className="text-muted-foreground mt-1 text-xs">Network transfer and request statistics</p>
+            <div className="mb-6">
+              <p className="text-foreground text-sm font-semibold">{t('resourceSummary.title')}</p>
+              <p className="text-muted-foreground mt-1 text-xs">{t('resourceSummary.description')}</p>
             </div>
-            <div className="text-muted-foreground space-y-4 text-sm">
-              <div className="flex items-center justify-between gap-4">
-                <span className="min-w-0 font-medium">Total requests</span>
-                <span className="text-foreground shrink-0 text-base font-bold">
-                  {formatCount(totalRow?.requestCount)}
-                </span>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="border-border/40 bg-muted/20 rounded-xl border p-4">
+                <p className="text-muted-foreground mb-2 text-xs font-medium">{t('resourceSummary.totalRequests')}</p>
+                <p className="text-foreground text-2xl font-bold">{formatCount(totalRow?.requestCount)}</p>
               </div>
-              <div className="border-border/40 border-b" aria-hidden="true" />
-              <div className="flex items-center justify-between gap-4">
-                <span className="min-w-0 font-medium">Total transfer</span>
-                <span className="text-primary shrink-0 text-base font-bold">{formatBytes(totalRow?.transferSize)}</span>
+              <div className="border-border/40 bg-muted/20 rounded-xl border p-4">
+                <p className="text-muted-foreground mb-2 text-xs font-medium">{t('resourceSummary.totalTransfer')}</p>
+                <p className="text-primary text-2xl font-bold">{formatBytes(totalRow?.transferSize)}</p>
               </div>
-              <div className="border-border/40 border-b" aria-hidden="true" />
-              <div className="flex items-center justify-between gap-4">
-                <span className="min-w-0 font-medium">Script transfer</span>
-                <span className="text-foreground shrink-0 text-base font-bold">
-                  {formatBytes(scriptRow?.transferSize)}
-                </span>
+              <div className="border-border/40 bg-muted/20 rounded-xl border p-4">
+                <p className="text-muted-foreground mb-2 text-xs font-medium">{t('resourceSummary.scriptTransfer')}</p>
+                <p className="text-foreground text-2xl font-bold">{formatBytes(scriptRow?.transferSize)}</p>
               </div>
-              <div className="border-border/40 border-b" aria-hidden="true" />
-              <div className="flex items-center justify-between gap-4">
-                <span className="min-w-0 font-medium">Third-party transfer</span>
-                <span className="text-foreground shrink-0 text-base font-bold">
-                  {formatBytes(thirdPartyRow?.transferSize)}
-                </span>
+              <div className="border-border/40 bg-muted/20 rounded-xl border p-4">
+                <p className="text-muted-foreground mb-2 text-xs font-medium">
+                  {t('resourceSummary.thirdPartyTransfer')}
+                </p>
+                <p className="text-foreground text-2xl font-bold">{formatBytes(thirdPartyRow?.transferSize)}</p>
               </div>
             </div>
           </section>
@@ -149,49 +142,55 @@ export default function InsightsPanel({ measurement }: InsightsPanelProps) {
 
         <div className="border-border/40 border-t pt-8">
           <section>
-            <div className="mb-4">
-              <p className="text-foreground text-sm font-semibold">Scanning environment</p>
-              <p className="text-muted-foreground mt-1 text-xs">Device and network configuration</p>
+            <div className="mb-6">
+              <p className="text-foreground text-sm font-semibold">{t('scanningEnvironment.title')}</p>
+              <p className="text-muted-foreground mt-1 text-xs">{t('scanningEnvironment.description')}</p>
             </div>
-            <div className="text-muted-foreground grid gap-4 text-sm sm:grid-cols-2">
-              <div className="space-y-1">
-                <span className="font-medium">Device</span>
-                <p className="text-foreground font-semibold">{configSettings?.formFactor ?? 'Unknown'}</p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="border-border/40 bg-muted/20 rounded-xl border p-4">
+                <p className="text-muted-foreground mb-2 text-xs font-medium">{t('scanningEnvironment.device')}</p>
+                <p className="text-foreground text-lg font-semibold capitalize">
+                  {configSettings?.formFactor ?? t('scanningEnvironment.unknown')}
+                </p>
               </div>
-              <div className="space-y-1">
-                <span className="font-medium">Benchmark</span>
-                <p className="text-primary font-semibold">
+              <div className="border-border/40 bg-muted/20 rounded-xl border p-4">
+                <p className="text-muted-foreground mb-2 text-xs font-medium">{t('scanningEnvironment.benchmark')}</p>
+                <p className="text-primary text-lg font-semibold">
                   {environment?.benchmarkIndex ? environment.benchmarkIndex.toFixed(1) : 'N/A'}
                 </p>
               </div>
-              <div className="space-y-1 sm:col-span-2">
-                <span className="font-medium">Network UA</span>
-                <p className="text-foreground mt-1 font-mono text-xs leading-relaxed break-all">
-                  {environment?.networkUserAgent ?? '—'}
-                </p>
-              </div>
-              <div className="space-y-1 sm:col-span-2">
-                <span className="font-medium">Host UA</span>
-                <p className="text-foreground mt-1 font-mono text-xs leading-relaxed break-all">
-                  {environment?.hostUserAgent ?? '—'}
-                </p>
-              </div>
+              {environment?.networkUserAgent && (
+                <div className="border-border/40 bg-muted/20 rounded-xl border p-4 sm:col-span-2">
+                  <p className="text-muted-foreground mb-2 text-xs font-medium">{t('scanningEnvironment.networkUA')}</p>
+                  <p className="text-foreground font-mono text-xs leading-relaxed break-all">
+                    {environment.networkUserAgent}
+                  </p>
+                </div>
+              )}
+              {environment?.hostUserAgent && (
+                <div className="border-border/40 bg-muted/20 rounded-xl border p-4 sm:col-span-2">
+                  <p className="text-muted-foreground mb-2 text-xs font-medium">{t('scanningEnvironment.hostUA')}</p>
+                  <p className="text-foreground font-mono text-xs leading-relaxed break-all">
+                    {environment.hostUserAgent}
+                  </p>
+                </div>
+              )}
             </div>
           </section>
 
-          <div className="border-border/40 mt-8 space-y-4 border-t pt-8">
-            <div>
-              <p className="text-foreground text-sm font-semibold">Opportunities</p>
-              <p className="text-muted-foreground mt-1 text-xs">Optimization suggestions</p>
+          <div className="border-border/40 mt-8 border-t pt-8">
+            <div className="mb-6">
+              <p className="text-foreground text-sm font-semibold">{t('opportunities.title')}</p>
+              <p className="text-muted-foreground mt-1 text-xs">{t('opportunities.description')}</p>
             </div>
-            <div className="grid gap-4 text-sm sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2">
               {OPPORTUNITY_AUDITS.filter((opportunity) => audits?.[opportunity.key]).map((opportunity) => {
                 const audit = audits?.[opportunity.key]
                 return (
-                  <div key={opportunity.key} className="space-y-2">
-                    <p className="text-foreground font-semibold">{opportunity.label}</p>
+                  <div key={opportunity.key} className="border-border/40 bg-muted/20 rounded-xl border p-4">
+                    <p className="text-foreground mb-2 font-semibold">{t(`opportunities.${opportunity.labelKey}`)}</p>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {audit?.displayValue ?? audit?.description ?? 'No issues reported'}
+                      {audit?.displayValue ?? audit?.description ?? t('opportunities.noIssuesReported')}
                     </p>
                   </div>
                 )
