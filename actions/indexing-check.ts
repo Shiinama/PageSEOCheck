@@ -35,6 +35,35 @@ export interface IndexingCheckResult {
   checkedAt: string
 }
 
+interface GoogleSearchResponse {
+  searchInformation?: {
+    searchTime?: number
+    formattedSearchTime?: string
+    totalResults?: string
+    formattedTotalResults?: string
+  }
+  items?: Array<{
+    link?: string
+    displayLink?: string
+    [key: string]: unknown
+  }>
+  queries?: {
+    request?: Array<{
+      title?: string
+      totalResults?: string
+      searchTerms?: string
+      count?: number
+      startIndex?: number
+      inputEncoding?: string
+      outputEncoding?: string
+      safe?: string
+      cx?: string
+    }>
+    [key: string]: unknown
+  }
+  [key: string]: unknown
+}
+
 /**
  * 创建 OpenRouter 客户端
  */
@@ -52,41 +81,50 @@ function createOpenRouterClient() {
 
 /**
  * 检查页面是否被Google收录
- * 使用site:查询方案
+ * 使用 Google Custom Search API
  */
 export async function checkGoogleIndexing(url: string): Promise<GoogleIndexingResult> {
   try {
-    // 使用 site:完整URL 检查页面是否被索引
-    const searchQuery = `site:${url}`
+    const apiKey = process.env.GOOGLE_SEARCH_API_KEY
+    const engineId = process.env.GOOGLE_SEARCH_ENGINE_ID
 
-    // 直接抓取Google搜索结果页面
-    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}&num=10`
-
-    const response = await fetch(searchUrl, {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-      },
-      next: { revalidate: 3600 } // 缓存1小时
-    })
-
-    if (!response.ok) {
-      throw new Error(`Google search error: ${response.statusText}`)
+    if (!apiKey || !engineId) {
+      return {
+        indexed: false,
+        error: 'GOOGLE_SEARCH_API_KEY or GOOGLE_SEARCH_ENGINE_ID is not configured'
+      }
     }
 
-    const html = await response.text()
+    // 使用 q 参数直接搜索完整 URL（用引号包裹以确保精确匹配）
+    // 这是检查 URL 是否被索引的正确方法
+    const searchQuery = `${url}`
+    const apiUrl = `https://www.googleapis.com/customsearch/v1?key=${encodeURIComponent(apiKey)}&cx=${encodeURIComponent(engineId)}&q=${encodeURIComponent(searchQuery)}&num=10`
 
-    console.log(html, 'checkGoogleIndexing')
+    const response = await fetch(apiUrl)
 
-    // 检查是否有"没有找到"的提示，如果没有这个提示就说明有结果（被索引了）
-    const noResults =
-      html.includes('did not match any documents') || html.includes('没有找到') || html.includes('No results found')
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(`Google Custom Search API error: ${response.statusText} - ${JSON.stringify(errorData)}`)
+    }
 
-    const indexed = !noResults
+    const data: GoogleSearchResponse = (await response.json()) as GoogleSearchResponse
+
+    // 检查搜索结果数量，或者检查返回的结果中是否包含目标URL
+    let resultCount = data.searchInformation?.totalResults ? parseInt(data.searchInformation.totalResults, 10) : 0
+
+    // 如果 totalResults 为 0，但返回了 items，检查 items 中是否包含目标 URL
+    if (resultCount === 0 && data.items && data.items.length > 0) {
+      const foundExactUrl = data.items.some((item) => item.link === url)
+      if (foundExactUrl) {
+        resultCount = 1
+      }
+    }
+
+    const indexed = resultCount > 0
 
     return {
       indexed,
-      resultCount: indexed ? 1 : 0
+      resultCount
     }
   } catch (error) {
     return {

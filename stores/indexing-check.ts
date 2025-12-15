@@ -27,7 +27,6 @@ export const useIndexingCheckStore = create<IndexingCheckState>()(
 
         try {
           const result = await checkIndexing(url, ['chatgpt'])
-          console.log(result)
           set({
             result,
             lastChecked: result.checkedAt,

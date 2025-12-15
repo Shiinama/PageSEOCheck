@@ -85,7 +85,7 @@ export default function IndexingCheckPanel({ result, loading }: IndexingCheckPan
         </div>
 
         {/* AI模型收录检查 */}
-        {availableModels.map(([model, modelResult]) => (
+        {availableModels?.map(([model, modelResult]) => (
           <div key={model} className="space-y-3">
             <div className="flex items-center justify-between">
               <h4 className="text-sm font-semibold">
@@ -124,7 +124,7 @@ export default function IndexingCheckPanel({ result, loading }: IndexingCheckPan
                     )}
                   </div>
                 </div>
-                {modelResult.training.response && (
+                {modelResult?.training?.response && (
                   <p className="text-muted-foreground line-clamp-2 text-xs">{modelResult.training.response}</p>
                 )}
               </div>
@@ -134,7 +134,7 @@ export default function IndexingCheckPanel({ result, loading }: IndexingCheckPan
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">{t('chatgpt.probes.rag')}</span>
                   <div className="flex items-center gap-2">
-                    {modelResult.rag.detected ? (
+                    {modelResult?.rag?.detected ? (
                       <>
                         <CheckCircle2 className="h-4 w-4 text-green-500" />
                         <Badge variant="default" className="bg-green-500 text-xs">
@@ -151,7 +151,7 @@ export default function IndexingCheckPanel({ result, loading }: IndexingCheckPan
                     )}
                   </div>
                 </div>
-                {modelResult.rag.response && (
+                {modelResult?.rag?.response && (
                   <p className="text-muted-foreground line-clamp-2 text-xs">{modelResult.rag.response}</p>
                 )}
               </div>
