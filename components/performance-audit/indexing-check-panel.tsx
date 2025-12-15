@@ -13,30 +13,12 @@ interface IndexingCheckPanelProps {
   loading: boolean
 }
 
-const levelColors = {
-  none: 'destructive',
-  training: 'secondary',
-  rag: 'default'
-} as const
-
-const confidenceColors = {
-  low: 'secondary',
-  medium: 'default',
-  high: 'success'
-} as const
-
 const modelLabels: Record<AIModel, string> = {
   chatgpt: 'ChatGPT'
 }
 
 export default function IndexingCheckPanel({ result, loading }: IndexingCheckPanelProps) {
   const t = useTranslations('indexingCheck')
-
-  const levelLabels = {
-    none: t('chatgpt.levels.none'),
-    training: t('chatgpt.levels.training'),
-    rag: t('chatgpt.levels.rag')
-  }
 
   if (loading) {
     return (
@@ -109,13 +91,6 @@ export default function IndexingCheckPanel({ result, loading }: IndexingCheckPan
               <h4 className="text-sm font-semibold">
                 {t('chatgpt.title')} ({modelLabels[model]})
               </h4>
-              <Badge
-                variant={
-                  levelColors[modelResult.level] as 'destructive' | 'secondary' | 'default' | 'success' | 'outline'
-                }
-              >
-                {levelLabels[modelResult.level]}
-              </Badge>
             </div>
 
             {modelResult.error && (
@@ -125,25 +100,32 @@ export default function IndexingCheckPanel({ result, loading }: IndexingCheckPan
               </div>
             )}
 
-            {/* 层级详情 */}
+            {/* 探针详情 */}
             <div className="space-y-4 rounded-lg border p-4">
               {/* 训练数据探针 */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">{t('chatgpt.probes.training')}</span>
                   <div className="flex items-center gap-2">
-                    {modelResult.details.training.detected ? (
-                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    {modelResult?.training?.detected ? (
+                      <>
+                        <CheckCircle2 className="h-4 w-4 text-green-500" />
+                        <Badge variant="default" className="bg-green-500 text-xs">
+                          YES
+                        </Badge>
+                      </>
                     ) : (
-                      <XCircle className="h-4 w-4 text-gray-400" />
+                      <>
+                        <XCircle className="h-4 w-4 text-gray-400" />
+                        <Badge variant="secondary" className="text-xs">
+                          NO
+                        </Badge>
+                      </>
                     )}
-                    <Badge variant={confidenceColors[modelResult.details.training.confidence]} className="text-xs">
-                      {t(`confidence.${modelResult.details.training.confidence}`)}
-                    </Badge>
                   </div>
                 </div>
-                {modelResult.details.training.response && (
-                  <p className="text-muted-foreground line-clamp-2 text-xs">{modelResult.details.training.response}</p>
+                {modelResult.training.response && (
+                  <p className="text-muted-foreground line-clamp-2 text-xs">{modelResult.training.response}</p>
                 )}
               </div>
 
@@ -152,18 +134,25 @@ export default function IndexingCheckPanel({ result, loading }: IndexingCheckPan
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">{t('chatgpt.probes.rag')}</span>
                   <div className="flex items-center gap-2">
-                    {modelResult.details.rag.detected ? (
-                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    {modelResult.rag.detected ? (
+                      <>
+                        <CheckCircle2 className="h-4 w-4 text-green-500" />
+                        <Badge variant="default" className="bg-green-500 text-xs">
+                          YES
+                        </Badge>
+                      </>
                     ) : (
-                      <XCircle className="h-4 w-4 text-gray-400" />
+                      <>
+                        <XCircle className="h-4 w-4 text-gray-400" />
+                        <Badge variant="secondary" className="text-xs">
+                          NO
+                        </Badge>
+                      </>
                     )}
-                    <Badge variant={confidenceColors[modelResult.details.rag.confidence]} className="text-xs">
-                      {t(`confidence.${modelResult.details.rag.confidence}`)}
-                    </Badge>
                   </div>
                 </div>
-                {modelResult.details.rag.response && (
-                  <p className="text-muted-foreground line-clamp-2 text-xs">{modelResult.details.rag.response}</p>
+                {modelResult.rag.response && (
+                  <p className="text-muted-foreground line-clamp-2 text-xs">{modelResult.rag.response}</p>
                 )}
               </div>
             </div>
