@@ -57,7 +57,8 @@
     "navigation": "站点导航",
     "navigationDescription": "访问我们网站的主要部分",
     "pricing": "定价",
-    "voiceDesign": "语音设计"
+    "voiceDesign": "语音设计",
+    "indexing": "索引检查"
   },
   "siteInfo": {
     "brandName": "SEO Checker",
@@ -186,6 +187,50 @@
       "title": "Cloudflare 图像生成器",
       "description": "使用 Cloudflare Workers AI 生成高质量图像，每次请求前需完成 Turnstile 人机验证。"
     }
+  },
+  "indexingCheck": {
+    "metaTitle": "网站收录检查工具 - 检查 Google 和 ChatGPT 收录状态",
+    "metaDescription": "免费检查您的网站是否被 Google 和 ChatGPT 收录。使用多层探针技术检测网站在 AI 搜索引擎中的可见性。",
+    "title": "网站收录检查工具",
+    "description": "检查您的网站是否被 Google 和 ChatGPT 收录。使用先进的探针技术检测网站在搜索引擎和 AI 模型中的可见性。",
+    "sectionTitle": "收录检查",
+    "inputTitle": "检查收录状态",
+    "inputDescription": "输入网站 URL，检查是否被 Google 和 ChatGPT 收录",
+    "urlLabel": "网站 URL",
+    "urlPlaceholder": "https://example.com",
+    "checkButton": "检查收录",
+    "checking": "检查中...",
+    "validationError": "请输入有效的 URL",
+    "invalidUrl": "URL 格式无效",
+    "checkedAt": "检查时间",
+    "google": {
+      "title": "Google 收录",
+      "indexed": "已收录",
+      "notIndexed": "未收录",
+      "resultCount": "找到 {count} 个结果"
+    },
+    "chatgpt": {
+      "title": "ChatGPT 收录",
+      "levels": {
+        "none": "未收录",
+        "training": "训练数据",
+        "rag": "RAG检索"
+      },
+      "probes": {
+        "training": "训练数据探针",
+        "rag": "RAG 检索探针"
+      }
+    },
+    "confidence": {
+      "low": "低",
+      "medium": "中",
+      "high": "高"
+    },
+    "selectModels": "选择要检查的AI模型",
+    "models": {
+      "chatgpt": "ChatGPT"
+    },
+    "selectAtLeastOneModel": "请至少选择一个AI模型"
   },
   "seoChecker": {
     "metaTitle": "SEO 检查器 – 免费网站 SEO 分析工具",

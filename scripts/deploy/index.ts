@@ -6,6 +6,8 @@ import { resolve } from 'node:path'
 const PROJECT_NAME = process.env.PROJECT_NAME
 
 const environments = [
+  'OPENAI_API_KEY',
+  'OPENROUTER_API_KEY',
   'AUTH_SECRET',
   'AUTH_GOOGLE_ID',
   'AUTH_GOOGLE_SECRET',

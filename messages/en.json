@@ -4,6 +4,7 @@
     "home": "Home",
     "voiceDesign": "Voice Design",
     "pricing": "Pricing",
+    "indexing": "Indexing Check",
     "navigation": "Site Navigation",
     "navigationDescription": "Access the main sections of our website"
   },
@@ -181,6 +182,50 @@
     "metaDescription": "Explore our latest articles on beauty analysis, AI technology, and facial aesthetics. Discover expert insights, tips, and trends in the world of AI-powered beauty assessment.",
     "noArticles": "No articles available",
     "publishedAt": "Published at {date}"
+  },
+  "indexingCheck": {
+    "metaTitle": "Website Indexing Check Tool - Check Google & ChatGPT Indexing Status",
+    "metaDescription": "Free tool to check if your website is indexed by Google and ChatGPT. Use multi-layer probe technology to detect website visibility in AI search engines.",
+    "title": "Website Indexing Check Tool",
+    "description": "Check if your website is indexed by Google and ChatGPT. Use advanced probe technology to detect website visibility in search engines and AI models.",
+    "sectionTitle": "Indexing Check",
+    "inputTitle": "Check Indexing Status",
+    "inputDescription": "Enter a website URL to check if it's indexed by Google and ChatGPT",
+    "urlLabel": "Website URL",
+    "urlPlaceholder": "https://example.com",
+    "checkButton": "Check Indexing",
+    "checking": "Checking...",
+    "validationError": "Please enter a valid URL",
+    "invalidUrl": "Invalid URL format",
+    "checkedAt": "Checked at",
+    "google": {
+      "title": "Google Indexing",
+      "indexed": "Indexed",
+      "notIndexed": "Not Indexed",
+      "resultCount": "Found {count} results"
+    },
+    "chatgpt": {
+      "title": "ChatGPT Indexing",
+      "levels": {
+        "none": "Not Indexed",
+        "training": "Training Data",
+        "rag": "RAG Retrieval"
+      },
+      "probes": {
+        "training": "Training Data Probe",
+        "rag": "RAG Retrieval Probe"
+      }
+    },
+    "confidence": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "selectModels": "Select AI models to check",
+    "models": {
+      "chatgpt": "ChatGPT"
+    },
+    "selectAtLeastOneModel": "Please select at least one AI model"
   },
   "seoChecker": {
     "metaTitle": "SEO Checker – Free SEO Analysis Tool for Any Website",
